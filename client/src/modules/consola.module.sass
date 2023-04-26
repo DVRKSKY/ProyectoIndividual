@@ -56,20 +56,24 @@ $color-botones: #3E3C3F
                     width: 55%
                     position: relative
                     .upArrow,.downArrow,.leftArrow,.rightArrow
-                        width: 66px
-                        height: 66px
+                        width: 36%
+                        height: 36%
                         border-radius: 70%
                         display: flex
                         justify-content: center
                         align-items: center
                         background-color: $color-border-pantalla
+                        box-shadow: -3px 0px 8px rgba(0, 0, 0, 0.5)
+                        transition: box-shadow 0.2s ease-in-out
                         &::before
                             content: ""
-                            width: 60px
-                            height: 60px
+                            width: 95%
+                            height: 95%
                             border-radius: 50%
                             background-color: $color-botones
                             box-shadow: inset 3px -3px 3px rgba(0, 0, 0, 0.5), inset -3px 3px 3px rgba(255, 255, 255, 0.3)
+                        &:hover
+                            box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.5)
                         &::after
                             content: ""
                             width: 0
@@ -78,6 +82,8 @@ $color-botones: #3E3C3F
                             border-left: 12px solid transparent
                             border-right: 12px solid transparent
                             border-bottom: 14px solid $color-border-pantalla
+
+                            
                     .upArrow
                         position: absolute
                         left: 50%
@@ -128,22 +134,24 @@ $color-botones: #3E3C3F
                     width: 55%
                     position: relative
                     .upArrow,.downArrow,.leftArrow,.rightArrow
-                        width: 66px
-                        height: 66px
+                        width: 36%
+                        height: 36%
                         border-radius: 70%
                         display: flex
                         justify-content: center
                         align-items: center
                         background-color: $color-border-pantalla
-                        transition: box-shadow 2s ease-in-out
+                        box-shadow: 5px 0px 5px rgba(0, 0, 0, 0.5)
+                        transition: box-shadow 0.2s ease-in-out
                         &::before
                             content: ""
-                            width: 60px
-                            height: 60px
+                            width: 95%
+                            height: 95%
                             border-radius: 50%
                             background-color: $color-botones
                             box-shadow: inset 3px -3px 3px rgba(0, 0, 0, 0.5), inset -3px 3px 3px rgba(255, 255, 255, 0.3)
-                       
+                        &:hover
+                            box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.5)
 
                             
 
@@ -155,9 +163,7 @@ $color-botones: #3E3C3F
                         display: flex
                         justify-content: center
                         align-items: center
-                        &:hover
-                            color: red
-                            box-shadow: inset 3px -3px 1px rgba(0, 0, 0, 0.5), inset -3px 3px 3px rgba(255, 255, 255, 0.3)
+                        z-index: 1
                         &::after
                             content: "X"
                             color: white
@@ -234,4 +240,8 @@ $color-botones: #3E3C3F
             border-right: 40px solid $color-border-pantalla
             border-left: 40px solid $color-border-pantalla
             box-sizing: border-box
+            display: flex
+            justify-content: center
+            align-items: center
+            color: #000
 

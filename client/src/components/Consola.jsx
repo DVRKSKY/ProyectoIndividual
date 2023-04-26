@@ -2,17 +2,15 @@ import React from 'react'
 import style from '../modules/consola.module.sass'
 import { useState } from 'react'
 
-export default function Consola() {
+export default function Consola(props) {
   //Creamos una variable para que cambie el fondo de acuerdo al pokemon seleccionado
-  const [fondoDinamico, setFondoDinamico] = useState('pink')
-
+  const [fondoDinamico, setFondoDinamico] = useState('white')
   //Vamos a hacer que el Joystick siga al mouse
   const [position, setPosition] = useState({ x: 0, y: 0 })
-  //Esta funcion obtiene la posicion
+  //Esta funcion obtiene la posicion del moussi
   function handleMouseMove(event) {
     let resultadoX = (event.clientX - (window.innerWidth / 2))/ window.innerWidth
     let resultadoY = (event.clientY - (window.innerHeight/ 2))/ window.innerHeight
-    console.log(event.clientX , window.innerWidth)
     setPosition({ x: resultadoX, y: resultadoY });
   }
   return (
@@ -29,7 +27,9 @@ export default function Consola() {
             </div>
           </div>
         </div>
-        <div className={style.pantalla} ></div>
+        <div className={style.pantalla}>
+          {props.children}
+        </div>
         <div className={style.mandoDerecho}>
           <div className={style.botones}>
             <div className={style.flechas}>
