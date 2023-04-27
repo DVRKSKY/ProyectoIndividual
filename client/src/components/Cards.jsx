@@ -3,6 +3,7 @@ import style from '../modules/cards.module.sass'
 import imagenPrueba from '../assets/Treecko.svg'
 import pokebola from '../assets/pokebola.svg'
 import Bottom from '../components/buttons/Bottom'
+import { TransitionGroup, CSSTransition } from "react-transition-group"
 
 export default function Cards({ avanzarFunction , retrocederFunction}) {
     const arrayBase = [
@@ -54,21 +55,37 @@ export default function Cards({ avanzarFunction , retrocederFunction}) {
     return (
         <div className={style.contenido}>
             <div className={style.cardsWrapper}>
-                {arrayMostrado.map((poke, index) => {
-                    return(
-                        <div className={`${style.card} ${
-                            index === (activeIndex - i) % arrayMostrado.length ? style.active : ""
-                        }`}
-                        onAnimationEnd={() => setAnimationDirection("")}
+                <TransitionGroup component={null}>
+                    {arrayMostrado.map((poke, index) => {
+                    return (
+                        <CSSTransition
+                        key={poke.id}
+                        timeout={500}
+                        classNames={{
+                            enter: style["card-enter"],
+                            enterActive: style["card-enter-active"],
+                            exit: style["card-exit"],
+                            exitActive: style["card-exit-active"],
+                        }}
                         >
-                            <h1 className={style.id} >{poke.id}</h1>
-                            <img className={style.personaje} src={poke.imagen}/>
+                        <div
+                            className={`${style.card} ${
+                            index === (activeIndex - i) % arrayMostrado.length
+                                ? style.active
+                                : ""
+                            }`}
+                            onAnimationEnd={() => setAnimationDirection("")}
+                        >
+                            <h1 className={style.id}>{poke.id}</h1>
+                            <img className={style.personaje} src={poke.imagen} />
                             <h2 className={style.nombre}>{poke.nombre}</h2>
-                            <div className={style.backId} >#{poke.id}</div>
-                            <img className={style.action} src={pokebola} alt={poke.nombre}/>
+                            <div className={style.backId}>#{poke.id}</div>
+                            <img className={style.action} src={pokebola} alt={poke.nombre} />
                         </div>
-                    )
-                })}
+                        </CSSTransition>
+                    );
+                    })}
+                </TransitionGroup>
             </div>
             <div className={style.actions}>
                 <Bottom
