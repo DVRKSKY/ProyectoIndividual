@@ -28,7 +28,12 @@ export default function Consola(props) {
           </div>
         </div>
         <div className={style.pantalla}>
-          {props.children}
+          {
+          /*De esta manera renderiza el componente que le mando dentro del 
+          componente consola sin hacer condicionales de location, me 
+          parece más practico y limpio*/
+          props.children
+          }
         </div>
         <div className={style.mandoDerecho}>
           <div className={style.botones}>

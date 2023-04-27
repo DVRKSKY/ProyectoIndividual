@@ -1,13 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState,  } from 'react'
 import style from '../modules/cards.module.sass'
-
-
 import imagenPrueba from '../assets/Treecko.svg'
 import pokebola from '../assets/pokebola.svg'
+import Bottom from '../components/buttons/Bottom'
 
-
-
-export default function Cards() {
+export default function Cards({ avanzarFunction , retrocederFunction}) {
     const arrayBase = [
         {id:'00001', imagen: imagenPrueba, nombre: 'Treecko',},
         {id:'00002', imagen: imagenPrueba, nombre: 'Treecko',},
@@ -54,27 +51,35 @@ export default function Cards() {
         setArrayMostrado(newArrayMostrado);
         console.log(arrayMostrado);
     }, [i,f] )
-
-    
     return (
         <div className={style.contenido}>
-            {arrayMostrado.map((poke, index) => {
-                return(
-                <div className={`${style.card} ${
-                    index === (activeIndex - i) % arrayMostrado.length ? style.active : ""
-                }`}
-                onAnimationEnd={() => setAnimationDirection("")}
-                >
-                    <h1 className={style.id} >{poke.id}</h1>
-                    <img className={style.personaje} src={poke.imagen}/>
-                    <h2 className={style.nombre}>{poke.nombre}</h2>
-                    <div className={style.backId} onClick={()=>retroceder()} >#{poke.id}</div>
-                    <img className={style.action} src={pokebola} onClick={()=>avanzar()} alt='name'/>
-                </div>
-                )
-            })
-            }
+            <div className={style.cardsWrapper}>
+                {arrayMostrado.map((poke, index) => {
+                    return(
+                        <div className={`${style.card} ${
+                            index === (activeIndex - i) % arrayMostrado.length ? style.active : ""
+                        }`}
+                        onAnimationEnd={() => setAnimationDirection("")}
+                        >
+                            <h1 className={style.id} >{poke.id}</h1>
+                            <img className={style.personaje} src={poke.imagen}/>
+                            <h2 className={style.nombre}>{poke.nombre}</h2>
+                            <div className={style.backId} >#{poke.id}</div>
+                            <img className={style.action} src={pokebola} alt={poke.nombre}/>
+                        </div>
+                    )
+                })}
+            </div>
+            <div className={style.actions}>
+                <Bottom
+                    texto1="Anterior"
+                    texto2="Siguiente"
+                    boton1="B"
+                    boton2="A"
+                    retroceder={retroceder}
+                    avanzar={avanzar}
+                />
+            </div>
         </div>
-        
     )
 }
