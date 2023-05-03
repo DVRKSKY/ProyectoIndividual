@@ -3,8 +3,9 @@ import { Routes, Route } from  'react-router-dom'
 import NotFound from './components/NotFound'
 import Consola from './components/Consola'
 import Home from './views/Home'
-import Details from './components/Details'
+import Details from './views/Details'
 function App() {
+  //Guardamos en variable para mandarolo como children al componente
   const home = <Home/>
   const details = <Details/>
 

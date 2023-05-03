@@ -2,10 +2,11 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
+//Este es el enrutador, para conectarnos por principios de responsabilidad
 const routes = require('./routes/index.js');
 
 require('./db.js');
-
+//Server es nuestro server, este tiene la responsabilidad de crear el servidor
 const server = express();
 
 server.name = 'API';
