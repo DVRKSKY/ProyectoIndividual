@@ -3,17 +3,22 @@ import style from '../modules/cards.module.sass'
 import pokebola from '../assets/pokebola.svg'
 import Bottom from '../components/buttons/Bottom'
 import { useSelector } from 'react-redux'
+import { useNavigate } from "react-router-dom"
 
 
 export default function Cards({ avanzarFunction , retrocederFunction}) {
     //Mejoras, crear componente card, y separalo para poder modularizarlo
     const pokemons = useSelector(state => state.pokemons)
-    
+    const navigate = useNavigate()
+
     const [i, setI] = useState(0)
     const [f, setF] = useState(4)
     const [animationDirection, setAnimationDirection] = useState("");
     const [activeIndex, setActiveIndex] = useState(0);
-
+    //Ir a la ruta
+    const verDetails = (ruta) =>{
+      navigate(ruta)
+    }
 
     const get = (i, f) => {
         return pokemons.slice(i,f)
@@ -60,7 +65,7 @@ export default function Cards({ avanzarFunction , retrocederFunction}) {
                 <img className={style.personaje} src={poke.imagen} />
                 <h2 className={style.nombre}>{poke.name}</h2>
                 <div className={style.backId}>#{poke.id}</div>
-                <img className={style.action} src={pokebola} alt={poke.name} />
+                <img className={style.action} src={pokebola} alt={poke.name} onClick={()=>verDetails(`/details/${poke.id}`)} />
               </div>
             );
           })}

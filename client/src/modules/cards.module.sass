@@ -46,7 +46,8 @@ $color-letter: #fff
             z-index: 2
             bottom: -35%
             height: 100%
-            width: auto
+            width: 90%
+            object-fit: contain
         .backId, .nombre, .action
             display: none
         &.active
@@ -76,9 +77,9 @@ $color-letter: #fff
             .personaje
                 position: absolute
                 z-index: 2
-                top: -31%
-                height: 80%
-                width: auto
+                top: -40%
+                height: 95%
+                width: 95%
             .nombre
                 display: flex
                 font-size: 1.2rem
@@ -99,6 +100,7 @@ $color-letter: #fff
                 position: absolute
                 bottom: 10%
                 height: 15%
+                cursor: pointer
         &.left 
             transform: translateX(-25%)
             opacity: 0.5

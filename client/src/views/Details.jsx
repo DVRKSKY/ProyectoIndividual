@@ -1,6 +1,5 @@
 import React from 'react'
 import style from '../modules/details.module.sass'
-import treecko from '../assets/Treecko.svg'
 //Usamos una libreria para hacer el radar, ya que me tomaria mucho tiempo hacerla a mano
 //Y quiero hacer un jueguito, asi que a apalancarse.
 import Bottom from '../components/buttons/Bottom'
@@ -95,7 +94,7 @@ export default function Details() {
       <div className={style.presentacion}>
         <div className={style.id}>#0000{detail[0]?.id}</div>
         <div className={style.imagen}>
-          <img src={detail[0]?.imagen}/>
+          <img src={detail[0]?.imagen} className={style.imagen}/>
         </div>
       </div>
       <div className={style.actions}>
