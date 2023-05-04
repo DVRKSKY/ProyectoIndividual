@@ -35,16 +35,22 @@ const createPokemon = async (name, imagen, imagenGame, poderes, vida, ataque, de
 const getPokemonById = async (id, source) => {
     //Falta darle formato al id y ademas traemos los scores relacionados a ese pokemon
     const arr = [{url:`https://pokeapi.co/api/v2/pokemon/${id}`}]
-    const pokemon = 
-        source === "api" 
-            ? await formatArrayApi(arr)               
-            : await Pokemon.findByPk(id, 
-                {include:{
-                    model: Score,
-                    attributes: ["id","record"]
-                }}
-            )
-    return pokemon
+    if( source === "api" ){
+        const pokemon = await formatArrayApi(arr)    
+        return pokemon
+    }else{
+        const data = await Pokemon.findByPk(id, 
+            {include:{
+                model: Score,
+                attributes: ["id","record"]
+            }}
+        )
+        const pokemon = []
+        pokemon.push(data)
+
+        return pokemon
+    }
+    
 }
 
 const getAllPokemons = async (limit, offset) => {

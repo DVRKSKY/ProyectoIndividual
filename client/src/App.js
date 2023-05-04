@@ -17,7 +17,7 @@ function App() {
       <Routes>
         <Route exact path='/' element={<Consola/>}/>
         <Route path='/home' element={<Consola>{home}</Consola>}/>
-        <Route path='/details' element={<Consola>{details}</Consola>}/>
+        <Route path='/details/:id' element={<Consola>{details}</Consola>}/>
         <Route path='/create' element={<Consola>{form}</Consola>}/>
         <Route path='/404' element={<NotFound/>}/>
         

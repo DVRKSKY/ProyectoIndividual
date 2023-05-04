@@ -1,22 +1,14 @@
 import React, { useEffect, useState,  } from 'react'
 import style from '../modules/cards.module.sass'
-import imagenPrueba from '../assets/Treecko.svg'
 import pokebola from '../assets/pokebola.svg'
 import Bottom from '../components/buttons/Bottom'
+import { useSelector } from 'react-redux'
+
 
 export default function Cards({ avanzarFunction , retrocederFunction}) {
-    const arrayBase = [
-        {id:'00001', imagen: imagenPrueba, nombre: 'Treecko',},
-        {id:'00002', imagen: imagenPrueba, nombre: 'Treecko',},
-        {id:'00003', imagen: imagenPrueba, nombre: 'Treecko',},
-        {id:'00004', imagen: imagenPrueba, nombre: 'Treecko',},
-        {id:'00005', imagen: imagenPrueba, nombre: 'Treecko',},
-        {id:'00006', imagen: imagenPrueba, nombre: 'Treecko',},
-        {id:'00007', imagen: imagenPrueba, nombre: 'Treecko',},
-        {id:'00008', imagen: imagenPrueba, nombre: 'Treecko',},
-        {id:'00009', imagen: imagenPrueba, nombre: 'Treecko',},
-        {id:'00010', imagen: imagenPrueba, nombre: 'Treecko',},
-    ]
+    //Mejoras, crear componente card, y separalo para poder modularizarlo
+    const pokemons = useSelector(state => state.pokemons)
+    
     const [i, setI] = useState(0)
     const [f, setF] = useState(4)
     const [animationDirection, setAnimationDirection] = useState("");
@@ -24,7 +16,7 @@ export default function Cards({ avanzarFunction , retrocederFunction}) {
 
 
     const get = (i, f) => {
-        return arrayBase.slice(i,f)
+        return pokemons.slice(i,f)
         
     }
     const [arrayMostrado, setArrayMostrado] = useState([]);
@@ -35,7 +27,7 @@ export default function Cards({ avanzarFunction , retrocederFunction}) {
         setTimeout(()=>{
             setI(prevI => prevI + 1)
             setF(prevF => prevF + 1)
-            setActiveIndex((prevActiveIndex) => (prevActiveIndex + 1) % arrayBase.length);
+            setActiveIndex((prevActiveIndex) => (prevActiveIndex + 1) % pokemons.length);
         }, 500)
     }
     const retroceder =()=>{
@@ -43,7 +35,7 @@ export default function Cards({ avanzarFunction , retrocederFunction}) {
         setTimeout(()=>{
             setI(prevI => prevI - 1)
             setF(prevF => prevF - 1)
-            setActiveIndex((prevActiveIndex) => (prevActiveIndex - 1 + arrayBase.length) % arrayBase.length);
+            setActiveIndex((prevActiveIndex) => (prevActiveIndex - 1 + pokemons.length) % pokemons.length);
         },500)
     }
     useEffect(()=>{
@@ -66,9 +58,9 @@ export default function Cards({ avanzarFunction , retrocederFunction}) {
               >
                 <h1 className={style.id}>{poke.id}</h1>
                 <img className={style.personaje} src={poke.imagen} />
-                <h2 className={style.nombre}>{poke.nombre}</h2>
+                <h2 className={style.nombre}>{poke.name}</h2>
                 <div className={style.backId}>#{poke.id}</div>
-                <img className={style.action} src={pokebola} alt={poke.nombre} />
+                <img className={style.action} src={pokebola} alt={poke.name} />
               </div>
             );
           })}

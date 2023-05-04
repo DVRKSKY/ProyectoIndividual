@@ -5,37 +5,35 @@ import treecko from '../assets/Treecko.svg'
 //Y quiero hacer un jueguito, asi que a apalancarse.
 import Bottom from '../components/buttons/Bottom'
 import { Radar } from 'react-chartjs-2'
+import { useSelector } from 'react-redux'
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { getPokemon } from '../redux/actions'
+import { useParams } from 'react-router-dom'
 
 export default function Details() {
-  const detalles = {
-    nombre: 'Treecko',
-    id: '00002',
-    record: 1000,
-    tipo: ['planta', 'lucha', 'insecto' ],
-    poderes: ['disparon', 'regeneración'],
-    estadisticas: {
-      vida: 150,
-      ataque: 150,
-      defensa: 150,
-      speed: 150,
-      altura: 150,
-      peso: 150, 
-    },
-    imagen: treecko 
-  }
+  let {id} = useParams()
+  const detail = useSelector(state => state.pokemonDetail)
+  console.log(detail);
+  //Cargamos la data de los detalles en el momento que el componente  se monta
+  const dispatch = useDispatch()
+  useEffect(()=>{
+    dispatch(getPokemon(id))
+  },[])
+  
   const getPokemonRadarData = () => {
     return {
-      labels: ['Vida', 'Ataque', 'Defensa', 'Velocidad', 'Altura', 'Peso'],
+      labels: ['Vida', 'Ataque', 'A. especial', 'Velocidad' , 'D. especial','Defensa', ],
       datasets: [
         {
-          label: detalles.nombre,
+          label: detail[0]?.name,
           data: [
-            detalles.estadisticas.vida,
-            detalles.estadisticas.ataque,
-            detalles.estadisticas.defensa,
-            detalles.estadisticas.speed,
-            detalles.estadisticas.altura,
-            detalles.estadisticas.peso,
+            detail[0]?.vida,
+            detail[0]?.ataque,
+            detail[0]?.ataqueEspecial,
+            detail[0]?.velocidad,
+            detail[0]?.defenzaEspecial,
+            detail[0]?.defensa,
           ],
           backgroundColor: 'rgba(75, 192, 192, 0.2)',
           borderColor: 'rgba(75, 192, 192, 1)',
@@ -78,26 +76,26 @@ export default function Details() {
         <div className={style.otrasStats}>
           <div className={style.contenido}>
             <h5 className={style.titulo}>Nombre: </h5>
-            <h5 className={style.texto}>{detalles.nombre}</h5>
+            <h5 className={style.texto}>{detail[0]?.name}</h5>
           </div>
           <div className={style.contenido}>
-            <h5 className={style.titulo}>Record: </h5>
-            <h5 className={style.texto}>{detalles.record} pts</h5>
+            <h5 className={style.titulo}>Altura: </h5>
+            <h5 className={style.texto}>{detail[0]?.altura} pts</h5>
           </div>
           <div className={style.contenido}>
-            <h5 className={style.titulo}>Tipo: </h5>
-            <h5 className={style.texto}>Planta</h5>
+            <h5 className={style.titulo}>peso: </h5>
+            <h5 className={style.texto}>{detail[0]?.peso}</h5>
           </div>
           <div className={style.contenido}>
-            <h5 className={style.titulo}>Poderes: </h5>
-            <h5 className={style.texto}>Volar</h5>
+            <h5 className={style.titulo}>tipo: </h5>
+            <h5 className={style.texto}>{detail[0]?.tipo}</h5>
           </div>
         </div>
       </div>
       <div className={style.presentacion}>
-        <div className={style.id}>#00002</div>
+        <div className={style.id}>#0000{detail[0]?.id}</div>
         <div className={style.imagen}>
-          <img src={detalles.imagen}/>
+          <img src={detail[0]?.imagen}/>
         </div>
       </div>
       <div className={style.actions}>
