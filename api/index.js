@@ -28,7 +28,7 @@ const { conn } = require('./src/db.js');
 //Usamos alter cuando esten listo los modelos
 //Usamos force para no drope
 
-conn.sync({ force: true }).then(() => {
+conn.sync({ alter: true }).then(() => {
   server.listen(3001, () => {
     console.log('%s listening at 3001'); // eslint-disable-line no-console
   });

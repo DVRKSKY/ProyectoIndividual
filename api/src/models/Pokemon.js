@@ -2,7 +2,6 @@ const { DataTypes } = require('sequelize');
 // Exportamos una funcion que define el modelo
 // Luego le injectamos la conexion a sequelize.
 module.exports = (sequelize) => {
-  // defino el modelo
   sequelize.define('pokemon', {
     id: {
       type: DataTypes.UUID,
@@ -12,30 +11,60 @@ module.exports = (sequelize) => {
     },
     name: {
       type: DataTypes.STRING,
+      defaultValue: "",
       allowNull: false,
     },
-    type: {
+    imagen: {
+      type: DataTypes.STRING,
+      defaultValue: "",
+    },
+    imagenGame: {
+      type: DataTypes.STRING,
+      defaultValue: "",
+    },
+    poderes: {
       type: DataTypes.ARRAY(DataTypes.STRING),
-      allowNull: false,
+      defaultValue: [],
     },
-    stats: {
-      type: DataTypes.ARRAY(DataTypes.JSONB),
-      allowNull: false
-    },
-    weight:{
+    vida: {
       type: DataTypes.INTEGER,
-      allowNull: false,
       defaultValue: 0,
     },
-    height:{
+    ataque: {
       type: DataTypes.INTEGER,
-      allowNull: false,
       defaultValue: 0,
     },
-    created:{
+    defensa: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0,
+    },
+    ataqueEspecial: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0,
+    },
+    defenzaEspecial: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0,
+    },
+    velocidad: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0,
+    },
+    altura: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0,
+    },
+    peso: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0,
+    },
+    tipo: {
+      type: DataTypes.ARRAY(DataTypes.STRING),
+      defaultValue: [],
+    },
+    created: {
       type: DataTypes.BOOLEAN,
       defaultValue: true,
     }
-  },{timestamps: false}
-  );
+  }, { timestamps: false });
 };
