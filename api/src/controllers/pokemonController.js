@@ -82,21 +82,54 @@ const searchPokemonByName = async (name) => {
 };
   
 const getTypesPokemon = async () =>{
+    //Creamos el array de colors
+    const typeColors = {
+        normal: "rgba(145, 154, 162, 1)",
+        fighting: "rgba(206, 65, 107, 1)",
+        flying: "rgba(137, 170, 227, 1)",
+        poison: "rgba(181, 103, 206, 1)",
+        ground: "rgba(217, 120, 69, 1)",
+        rock: "rgba(197, 183, 140, 1)",
+        bug: "rgba(145, 193, 47, 1)",
+        ghost: "rgba(82, 105, 173, 1)",
+        steel: "rgba(90, 142, 162, 1)",
+        fire: "rgba(255, 157, 85, 1)",
+        water: "rgba(80, 144, 214, 1)",
+        grass: "rgba(99, 188, 90, 1)",
+        electric: "rgba(244, 210, 60, 1)",
+        psychic: "rgba(250, 113, 121, 1)",
+        ice: "rgba(115, 206, 192, 1)",
+        dragon: "rgba(11, 109, 195, 1)",
+        dark: "rgba(90, 84, 101, 1)",
+        fairy: "rgba(236, 143, 230, 1)",
+        unknown: "rgba(90, 84, 101, 1)",
+        shadow: "rgba(90, 84, 101, 1)",
+      };
+      
     // Verificamos si la base de datos está vacía
-    const dbPromise = await Types.findAll()
+    const dbPromise = await Types.findAll();
     if (dbPromise.length === 0) {
-        // Hacemos una solicitud a la API para obtener todos los tipos de Pokémon
-        const endpoint = (await axios.get('https://pokeapi.co/api/v2/type')).data.results
-        // Creamos registros en la base de datos
-        const createdTypes = await Promise.all(
-            endpoint.map((type) => Types.create({ name: type.name, url: type.url }))
-        )
-        // Devolvemos los tipos creados
-        return createdTypes
+    // Hacemos una solicitud a la API para obtener todos los tipos de Pokémon
+    const endpoint = (await axios.get("https://pokeapi.co/api/v2/type")).data.results;
+    // Creamos registros en la base de datos
+    const createdTypes = await Promise.all(
+      endpoint.map((type) => {
+        // Creamos un objeto con solo el name, url y color
+        const modifiedType = {
+            name: type.name,
+            url: type.url,
+            color: typeColors[type.name],
+        };
+        // Creamos el registro en la base de datos
+        return Types.create(modifiedType);
+        })
+    );
+    // Devolvemos los tipos creados
+    return createdTypes;
     } else {
         // Devolvemos los tipos almacenados en la base de datos
-        return dbPromise
-  }
+        return dbPromise;
+    }
 }
 
 module.exports = {

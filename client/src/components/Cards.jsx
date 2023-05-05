@@ -4,12 +4,22 @@ import pokebola from '../assets/pokebola.svg'
 import Bottom from '../components/buttons/Bottom'
 import { useSelector } from 'react-redux'
 import { useNavigate } from "react-router-dom"
+import Card from './Card';
+import { getColors, setColorBackground } from '../redux/actions';
+import { useDispatch } from 'react-redux';
+
 
 
 export default function Cards({ avanzarFunction , retrocederFunction}) {
     //Mejoras, crear componente card, y separalo para poder modularizarlo
     const pokemons = useSelector(state => state.pokemons)
+
     const navigate = useNavigate()
+
+
+    
+    const dispatch = useDispatch();
+  
 
     const [i, setI] = useState(0)
     const [f, setF] = useState(4)
@@ -26,49 +36,53 @@ export default function Cards({ avanzarFunction , retrocederFunction}) {
     }
     const [arrayMostrado, setArrayMostrado] = useState([]);
     const avanzar =()=>{
-
-
-        setAnimationDirection("translateX(-100%)")
-        setTimeout(()=>{
-            setI(prevI => prevI + 1)
-            setF(prevF => prevF + 1)
-            setActiveIndex((prevActiveIndex) => (prevActiveIndex + 1) % pokemons.length);
-        }, 500)
+      //Enviamos al state el typo depokemon al avanzar para cambiar de color
+      
+      setAnimationDirection("translateX(-100%)")
+      setTimeout(()=>{
+        setI(prevI => prevI + 1)
+        setF(prevF => prevF + 1)
+        setActiveIndex((prevActiveIndex) => (prevActiveIndex + 1) % pokemons.length);
+      }, 500)
     }
     const retroceder =()=>{
+        //Enviamos al state el typo depokemon al retroceder, para cambiar de color
+
         setAnimationDirection("translateX(0%)")
         setTimeout(()=>{
-            setI(prevI => prevI - 1)
-            setF(prevF => prevF - 1)
-            setActiveIndex((prevActiveIndex) => (prevActiveIndex - 1 + pokemons.length) % pokemons.length);
+          setI(prevI => prevI - 1)
+          setF(prevF => prevF - 1)
+          setActiveIndex((prevActiveIndex) => (prevActiveIndex - 1 + pokemons.length) % pokemons.length);
         },500)
     }
     useEffect(()=>{
         const newArrayMostrado = get(i, f)
         setArrayMostrado(newArrayMostrado);
-        console.log(arrayMostrado);
+        //Aqui al detectar el cambio se actualiza el
+        if(newArrayMostrado) dispatch(setColorBackground(newArrayMostrado?.[0]?.tipo[0]))
+
     }, [i,f] )
+
+    useEffect(() => {
+      dispatch(getColors());
+    }, [dispatch]);
+
     return (
         <div className={style.contenido}>
         <div className={style.cardsWrapper}>
-          {arrayMostrado.map((poke, index) => {
-            return (
-              <div
-                key={poke.id}
-                className={`${style.card} ${
-                  index === (activeIndex - i) % arrayMostrado.length
-                    ? style.active
-                    : ""
-                }`}
-              >
-                <h1 className={style.id}>{poke.id}</h1>
-                <img className={style.personaje} src={poke.imagen} />
-                <h2 className={style.nombre}>{poke.name}</h2>
-                <div className={style.backId}>#{poke.id}</div>
-                <img className={style.action} src={pokebola} alt={poke.name} onClick={()=>verDetails(`/details/${poke.id}`)} />
-              </div>
-            );
-          })}
+        {arrayMostrado.map((poke, index) => {
+          return (
+            <Card
+              key={poke.id}
+              id={poke.id}
+              name={poke.name}
+              imagen={poke.imagen}
+              tipo={poke.tipo}
+              onCardClick={() => verDetails(`/details/${poke.id}`)}
+              isActive={index === (activeIndex - i) % arrayMostrado.length}
+          />
+          );
+        })}
         </div>
         <div className={style.actions}>
           <Bottom
