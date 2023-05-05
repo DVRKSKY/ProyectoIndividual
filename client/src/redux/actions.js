@@ -32,7 +32,7 @@ export const getColors = () => {
 export const setColorBackground = (type) => {
     return async function(dispatch){
         const apiData = await axios.get(`http://localhost:3001/pokemons/types`)
-        const pokemonColor = apiData.data.filter(c => c.name == type)
+        const pokemonColor = apiData.data.filter(c => c.name === type)
         const color = pokemonColor[0]?.color
         dispatch({type: SET_COLOR_BACKGROUND, payload: color})
     }

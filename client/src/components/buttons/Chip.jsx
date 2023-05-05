@@ -1,9 +1,9 @@
 import React from 'react'
 import style from '../../modules/chip.module.sass'
-export default function Chip({texto, icono, funcion}) {
+export default function Chip({texto, icono, funcion, ruta}) {
   //Ya instalamos los iconos de google en la carpeta public
   return (
-    <button className={style.chip} onClick={()=> funcion()}>
+    <button className={style.chip} onClick={()=> funcion(ruta)}>
       <div className={style.icono}>
         <i className="material-icons">{icono}</i>
       </div>

@@ -1,20 +1,20 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useCallback  } from 'react'
 import style from '../../modules/bottomButton.module.sass'
 export default function Bottom({texto1, texto2, boton1, boton2,retroceder, avanzar}) {
-  const handleKeyDown = (event) => {
+  const handleKeyDown = useCallback((event) => {
     if (event.key === 'a' || event.key === 'A') {
       avanzar();
     } else if (event.key === 'b' || event.key === 'B') {
       retroceder();
     }
-  };
+  }, [avanzar, retroceder]);
 
   useEffect(() => {
     window.addEventListener('keydown', handleKeyDown);
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [avanzar, retroceder]);
+  }, [handleKeyDown]);
   return (
     <div className={style.contenido} >
         <div className={style.contenidoBoton}>

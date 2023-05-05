@@ -1,4 +1,3 @@
-import imagenPrueba from '../assets/Treecko.svg'
 import { GET_POKEMONS, GET_POKEMON, GET_COLORS, SET_COLOR_BACKGROUND } from './actions'
 
 const initialState = {

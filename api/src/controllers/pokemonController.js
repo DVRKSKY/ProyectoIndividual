@@ -10,6 +10,7 @@ const formatArrayApi = async (arr) => {
         name: data?.name,
         imagen: data?.sprites?.other?.dream_world?.front_default ?? "",
         imagenGame: data?.sprites?.front_default ?? "",
+        imagenOriginal: data?.sprites?.other?.['official-artwork']?.front_default ?? "",
         poderes: data?.abilities?.map(({ability}) => ability.name),
         vida: data?.stats?.find(i => i.stat.name === "hp")?.base_stat ?? 0,
         ataque: data?.stats?.find(i => i.stat.name === "attack")?.base_stat ?? 0,

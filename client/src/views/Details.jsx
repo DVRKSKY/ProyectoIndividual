@@ -4,21 +4,28 @@ import style from '../modules/details.module.sass'
 //Y quiero hacer un jueguito, asi que a apalancarse.
 import Bottom from '../components/buttons/Bottom'
 import { Radar } from 'react-chartjs-2'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 import { getPokemon } from '../redux/actions'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
+
 
 export default function Details() {
   let {id} = useParams()
   const detail = useSelector(state => state.pokemonDetail)
-  console.log(detail);
+  //console.log(detail);
+  
+  //Volver
+  const navigate = useNavigate()
+  const volver = () => {
+    navigate("/home")
+  }
+
   //Cargamos la data de los detalles en el momento que el componente  se monta
   const dispatch = useDispatch()
   useEffect(()=>{
     dispatch(getPokemon(id))
-  },[])
+  },[dispatch,id])
   
   const getPokemonRadarData = () => {
     return {
@@ -92,9 +99,9 @@ export default function Details() {
         </div>
       </div>
       <div className={style.presentacion}>
-        <div className={style.id}>#0000{detail[0]?.id}</div>
+        <div className={style.id}>#{String(detail[0]?.id).padStart(5, '0').slice(0, 5)}</div>
         <div className={style.imagen}>
-          <img src={detail[0]?.imagen} className={style.imagen}/>
+          <img src={detail[0]?.imagen ? detail[0]?.imagen : detail[0]?.imagenOriginal} alt={detail.name} className={style.imagen}/>
         </div>
       </div>
       <div className={style.actions}>
@@ -103,6 +110,7 @@ export default function Details() {
           texto2="Seleccionar"
           boton1="B"
           boton2="A"
+          retroceder={volver}
         />
         </div>
     </div>

@@ -56,6 +56,7 @@ export default function Consola(props) {
             <div className={style.joystick}>
               <div className={style.botonJoystick}  style={{ top: (position.y * 120)/2, left: (position.x * 120) / 2 }} ></div>
             </div>
+            {/*<div className={style.home}></div>*/}
           </div>
         </div>
       </div>

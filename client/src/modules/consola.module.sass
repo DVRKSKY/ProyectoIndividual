@@ -11,7 +11,7 @@ $color-botones: #3E3C3F
     width: 100%
     color: white
     background-color: $color-fondo
-    transition: .3s ease-in
+    transition: .3s ease-in-out
     .consola
         width: 90%
         height: 70%
@@ -127,7 +127,7 @@ $color-botones: #3E3C3F
                 flex-direction: column
                 width: 100%
                 height: 100%
-                
+                position: relative
                 .flechas
                     margin-top: 30%
                     display: flex
@@ -232,6 +232,29 @@ $color-botones: #3E3C3F
                         z-index: 100             
                         background-color: $color-botones
                         box-shadow: inset 5px -5px 5px rgba(0, 0, 0, 0.5), inset -4px 4px 10px rgba(255, 255, 255, 0.3)
+                .home
+                    width: 16%
+                    height: 7%
+                    position: absolute
+                    border-radius: 100%
+                    background-color: #000
+                    border: 5px solid $color-botones
+                    bottom: 8%
+                    justify-content: center
+                    align-items: center
+                    display: flex
+                    cursor: pointer
+                    left: 50px
+                    .icon
+                       border-radius: 100%
+                       width: 20px
+                       height: 20px
+                       justify-content: center
+                       align-items: center
+                       display: flex
+                       background-color: $color-botones 
+
+
         .pantalla
             width: 60%
             height: 100%
@@ -245,4 +268,3 @@ $color-botones: #3E3C3F
             justify-content: center
             align-items: center
             color: #000
-
