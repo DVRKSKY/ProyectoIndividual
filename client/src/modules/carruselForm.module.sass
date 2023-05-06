@@ -1,9 +1,11 @@
+$color-fondo: #324145
+$color-white: #fff
 .carouselForm
     display: flex
     flex-direction: column
     justify-content: center
     align-items: center
-    height: 50%
+    height: 80%
     width: 50%
     margin-bottom: 20%
     .titulo
@@ -15,7 +17,9 @@
         align-items: center
         justify-content: center
         margin-bottom: 40px
+        margin-top: -50px
         user-select: none
+        color: $color-fondo
         &::first-word 
             font-weight: bold
     .inputForm
@@ -63,3 +67,49 @@
         font-size: .8rem
         flex-wrap: nowrap
         text-align: center
+.botones
+    display: flex
+    flex-direction: row
+    align-items: center
+    justify-content: flex-end
+    position: absolute
+    bottom: 7%
+    right: 5%
+    width: auto
+    .contenidoBoton
+        display: flex
+        align-items: center
+        margin-right: 20px
+        .boton
+            height: 30px
+            width: 30px
+            border-radius: 100%
+            background-color: $color-fondo
+            color: $color-white
+            margin-right: 1%
+            cursor: pointer
+            display: flex
+            justify-content: center
+            align-items: center
+            >span
+                font-size: .9rem
+                font-weight: 600
+                color: $color-white
+        .texto
+            font-size: .9rem
+            margin-left: 8px
+            color: $color-fondo
+            user-select: none
+.botonDisabled 
+    height: 30px
+    width: 30px
+    border-radius: 100%
+    color: white
+    margin-right: 1%
+    cursor: pointer
+    display: flex
+    justify-content: center
+    align-items: center
+    background-color: #7e7e7e
+    cursor: not-allowed
+

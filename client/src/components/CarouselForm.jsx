@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
 import styles from '../modules/carruselForm.module.sass';
+import {useNavigate} from 'react-router-dom'
 //import styles from '../modules/form.module.sass'
 const CarouselForm = ({ form, errors, changeHandler, validate, isValid, onSubmit }) => {
-    
+  const navigate = useNavigate()
+  const goHome = () => {
+    navigate("/home")
+  }
     const steps = [
         { field: 'name', type: 'text', label: 'Name:', header: 'Nombra' },
         { field: 'imagen', type: 'text', label: 'Imagen:', header: 'Imagen' },
@@ -87,18 +91,25 @@ const CarouselForm = ({ form, errors, changeHandler, validate, isValid, onSubmit
           <div>
             {errors[currentField.field] && <div className={styles.error}>{errors[currentField.field]}</div>}
           </div>
-          <div>
-            <button onClick={prevStep} disabled={currentStep === 0}>Anterior</button>
-            <button
-                onClick={currentStep === totalSteps - 1 ? onSubmit : nextStep}
-                disabled={errors[currentField.field]}
+          <div className={styles.botones}>
+            <div className={styles.contenidoBoton}>
+                <div className={styles.boton} onClick={currentStep === 0 ? goHome : prevStep} >
+                    <span>B</span>
+                </div>
+                <div className={styles.texto}>Volver</div>
+            </div>
+            <div className={styles.contenidoBoton}>
+                <div
+                    className={errors[currentField.field] ? styles.botonDisabled : styles.boton}
+                    onClick={errors[currentField.field] ? undefined : (currentStep === totalSteps - 1 ? onSubmit : nextStep)}
                 >
-            {currentStep === totalSteps - 1 ? "Enviar" : "Siguiente"}
-            </button>
+                    <span>A</span>
+                </div>
+                <div className={styles.texto}>{currentStep === totalSteps - 1 ? "Enviar" : "Siguiente"}</div>
+            </div>
+
+
           </div>
-
-
-
         </div>
       );
   };
