@@ -24,6 +24,7 @@ $color-white: #fff
             font-weight: bold
     .inputForm
         display: flex
+        flex-direction: row
         border-radius: 50px
         width: 100%
         height: 36px
@@ -34,11 +35,37 @@ $color-white: #fff
         cursor: pointer
         transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out
         text-align: center        
-        color: #fff
+        color: $color-fondo
+        justify-content: center
+        align-items: center
         font-size: 16px
         &:focus 
             border: none
             outline: none
+    .botonForm
+        display: flex
+        flex-direction: row
+        border-radius: 50px
+        width: 70%
+        height: 36px
+        background-color: #EC8FE6
+        border: 1px solid #EC8FE6
+        margin-left: auto
+        margin-right: auto
+        cursor: pointer
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out
+        text-align: center        
+        color: $color-fondo
+        justify-content: center
+        align-items: center
+        font-size: 16px
+        .icono
+            font-size: 16px
+            color: $color-fondo
+            margin-right: 10px
+        .texto
+            font-size: 16px
+            color: $color-fondo
     .rangeStyle
         -webkit-appearance: none
         width: 100%
@@ -53,6 +80,11 @@ $color-white: #fff
         border-radius: 50px
         background-color: #FFE9E9
         cursor: pointer
+    .rangeData
+        font-size: .8rem
+        color: $color-fondo
+        opacity: .5
+        user-select: none
     .rangeStyle::-moz-range-thumb 
         width: 20px
         height: 20px
@@ -67,6 +99,16 @@ $color-white: #fff
         font-size: .8rem
         flex-wrap: nowrap
         text-align: center
+    .checkboxGroup
+        display: grid
+        grid-template-columns: repeat(4, 1fr) // Crea una cuadrícula con 5 columnas de igual tamaño
+        gap: 0.5rem
+    .checkboxContainer 
+        display: flex
+        font-size: 10px
+        flex-direction: row
+        margin: 1px// Añade un pequeño margen alrededor de cada elemento
+
 .botones
     display: flex
     flex-direction: row
@@ -112,4 +154,5 @@ $color-white: #fff
     align-items: center
     background-color: #7e7e7e
     cursor: not-allowed
-
+.contenidoBotonNone
+    display: none

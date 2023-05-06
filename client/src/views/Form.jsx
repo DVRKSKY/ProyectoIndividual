@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 import axios from 'axios'
 import styles from '../modules/form.module.sass'
 import CarouselForm from '../components/CarouselForm'
@@ -61,18 +61,24 @@ export default function Form( ) {
     validate(newForm);
     setForm(newForm);
   }
-  const validate = (form) => {
+  const validate = useCallback((form) => {
     //Podemos validar con una exppresion regular
     //if(expresionregular.test(form.propiedadaTestear)) => todo bien
     let newErrors = {};
-
-    // Validar nombre: al menos 3 caracteres
-    if (form.name.length < 3) {
+    if (!form.name || form.name.length < 3) {
       newErrors.name = 'Mínimo 3 caracteres.';
     }
-
+    //Validar campos url: No vacios y deben cumplir con el formarto url
+    const urlRegex = /^(?:(?:https?|ftp):\/\/)?(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9][a-z0-9-]*[a-z0-9]|(?:(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.){3}(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9]))(?::[0-9]{1,5})?(?:[/?#]\S*)?$/i;
+    for (const key of ['imagen', 'imagenGame']) {
+      if (!form[key]) {
+        newErrors[key] = 'Este campo no debe estar vacío';
+      } else if (!urlRegex.test(form[key])) {
+        newErrors[key] = 'Ingrese un URL válido';
+      }
+    }
     // Validar campos numéricos: no vacíos y mayores a 0
-    for (const key of ['vida', 'ataque', 'defensa', 'ataqueEspecial', 'defenzaEspecial', 'velocidad', 'altura', 'peso']) {
+    for (const key of ['vida', 'ataque', 'defensa', 'ataqueEspecial', 'defenzaEspecial']) {
       if (!form[key] || form[key] < 0 || form[key] > 200) {
         newErrors[key] = 'No debe ser 0';
       }
@@ -82,16 +88,19 @@ export default function Form( ) {
       newErrors.tipo[0] = 'No puedes seleccionar más de 2 tipos de Pokémon.';
     }
     setErrors(newErrors);
-  }
+  }, []);
   const submitHandler = (e) => {
     e.preventDefault();
     console.log(form);
     axios.post('http://localhost:3001/posts', form)
-      .then(res => alert(res));
+      .then(res => console.log(res));
   }
   const isValid = (field) => {
     return !errors[field];
   }
+  useEffect(() => {
+    validate(form);
+  }, [validate, form]);
   return (
     <div className={styles.fondo}>
       <div className={styles.pokeFondo}></div>

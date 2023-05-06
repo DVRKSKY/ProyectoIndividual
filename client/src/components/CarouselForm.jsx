@@ -19,20 +19,23 @@ const CarouselForm = ({ form, errors, changeHandler, validate, isValid, onSubmit
         { field: 'velocidad', type: 'range', label: 'Velocidad:' , header: 'Velocidad' },
         { field: 'altura', type: 'range', label: 'Altura:' , header: 'Altura'},
         { field: 'peso', type: 'range', label: 'Peso:' , header: 'Peso'},
+        
         {
-            field: 'tipo',
+          field: 'tipo',
             type: 'checkbox-group',
             label: 'Tipo:',
-            header: 'Tipo',
+            header: 'Selecciona el tipo',
             options: [
               "normal", "fighting", "flying", "poison", "ground", "rock", "bug", "ghost",
               "steel", "fire", "water", "grass", "electric", "psychic", "ice", "dragon",
               "dark", "fairy", "unknown", "shadow",
             ],
-          }
-          
-        // Agrega el resto de los campos aquí.
-    ];
+        },  
+        { field: 'enviar', type: 'button', label: 'Crear a' , header: 'Crea'},
+        { field: 'final', type: 'button', label: 'Ir al home' , header: 'Pokemon creado'},
+
+          // Agrega el resto de los campos aquí.
+        ];
     
     const totalSteps = steps.length;
     const [currentStep, setCurrentStep] = useState(0);
@@ -51,13 +54,17 @@ const CarouselForm = ({ form, errors, changeHandler, validate, isValid, onSubmit
         e.preventDefault();
         setCurrentStep(currentStep - 1);
     };
+    const enviarData = (e) => {
+      onSubmit(e)
+      nextStep(e)
+    }
     
     return (
         <div className={styles.carouselForm}>
           {currentField.type === 'checkbox-group' ? (
             <div>
                 <h2 className={styles.titulo}>
-                    <span style={{ fontWeight: "bold" }}>{currentField.header}</span>  a tu nuevo pokemon
+                    <span style={{ fontWeight: "bold" }}>{currentField.header}</span>  de tu nuevo pokemon
                 </h2>
                 <div className={styles.checkboxGroup}>
                 {currentField.options.map((type) => (
@@ -75,37 +82,79 @@ const CarouselForm = ({ form, errors, changeHandler, validate, isValid, onSubmit
                 </div>
             </div>
           ) : (
-            <div>
-                <h2 className={styles.titulo}>
-                    <span style={{ fontWeight: "bold" }}>{currentField.header}</span>  a tu nuevo pokemon
-                </h2>
-                <input
-                  name={currentField.field}
-                  type={currentField.type}
-                  value={form[currentField.field]}
-                  onChange={changeHandler}
-                  className={currentField.type === "range" ? styles.rangeStyle : styles.inputForm}
-                />
-            </div>
+            currentField.type === 'button' ? ( 
+              currentField.field === 'enviar' ? (
+                <div>
+                    <h2 className={styles.titulo}>
+                        <span style={{ fontWeight: "bold" }}>{currentField.header}</span> a tu nuevo pokemon
+                    </h2>
+                    <div
+                      onClick={enviarData}
+                      className={styles.botonForm}
+                    >
+                      <div className={styles.icono}>
+                        <span className="material-symbols-outlined">egg</span>
+                      </div>
+                      <div className={styles.texto}>Crear a {form.name}</div>
+                      
+                    </div>
+                </div>
+              ) : (
+                <div>
+                    <h2 className={styles.titulo}>
+                        <span style={{ fontWeight: "bold" }}>{currentField.header}</span> correctamente
+                    </h2>
+                    <div
+                      onClick={goHome}
+                      className={styles.botonForm}
+                    >
+                      <div className={styles.icono}>
+                        <span className="material-symbols-outlined">home</span>
+                      </div>
+                      <div className={styles.texto}>Ir al home</div>
+                      
+                    </div>
+                </div>
+              )
+            
+            ) : (
+              <div>
+                  <h2 className={styles.titulo}>
+                      <span style={{ fontWeight: "bold" }}>{currentField.header}</span>  a tu nuevo pokemon
+                  </h2>
+                  <input
+                    max="200"
+                    name={currentField.field}
+                    type={currentField.type}
+                    value={form[currentField.field]}
+                    onChange={changeHandler}
+                    className={currentField.type === "range" ? styles.rangeStyle : styles.inputForm}
+                  />
+                  <span className={currentField.type === "range" ? styles.rangeData : styles.contenidoBotonNone}>{form[currentField.field]}</span>
+              </div>
+            )
           )}
           <div>
             {errors[currentField.field] && <div className={styles.error}>{errors[currentField.field]}</div>}
           </div>
           <div className={styles.botones}>
-            <div className={styles.contenidoBoton}>
-                <div className={styles.boton} onClick={currentStep === 0 ? goHome : prevStep} >
+            <div className={currentStep === totalSteps - 1 ? styles.contenidoBotonNone : styles.contenidoBoton}>
+                <div 
+                    className={currentStep === totalSteps - 1 ? styles.botonDisabled : styles.boton} 
+                    onClick={currentStep === 0 ? goHome : prevStep} 
+                >
                     <span>B</span>
                 </div>
                 <div className={styles.texto}>Volver</div>
             </div>
-            <div className={styles.contenidoBoton}>
+            <div className={currentStep === totalSteps - 1 ? styles.contenidoBotonNone : styles.contenidoBoton}>
                 <div
-                    className={errors[currentField.field] ? styles.botonDisabled : styles.boton}
-                    onClick={errors[currentField.field] ? undefined : (currentStep === totalSteps - 1 ? onSubmit : nextStep)}
+                    className={errors[currentField.field] || currentStep === totalSteps - 1 ? styles.botonDisabled : styles.boton}
+                    onClick={errors[currentField.field] ? undefined : (currentStep === totalSteps - 1 ? undefined : nextStep)}
                 >
                     <span>A</span>
                 </div>
-                <div className={styles.texto}>{currentStep === totalSteps - 1 ? "Enviar" : "Siguiente"}</div>
+                <div className={styles.texto}>Siguiente</div>
             </div>
 
 
