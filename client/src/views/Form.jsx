@@ -1,13 +1,17 @@
 import React, { useState } from 'react'
 import axios from 'axios'
-export default function Form() {
+import styles from '../modules/form.module.sass'
+import CarouselForm from '../components/CarouselForm'
+export default function Form( ) {
   
   const [form, setForm] = useState({
     name: '',
     imagen: '',
     imagenGame: '',
-    poderes: ["overgrow",
-    "chlorophyll"],
+    poderes: [
+      "overgrow",
+      "chlorophyll",
+    ],
     vida: 0,
     ataque: 0,
     defensa: 0,
@@ -16,10 +20,7 @@ export default function Form() {
     velocidad: 0,
     altura: 0,
     peso: 0,
-    tipo: [
-      "grass",
-      "poison"
-    ],
+    tipo: [],
   })
 
   const [errors, setErrors] = useState({
@@ -35,97 +36,85 @@ export default function Form() {
     velocidad: 0,
     altura: 0,
     peso: 0,
-    //tipo: '',
+    tipo: [],
   })
 
   const changeHandler = (e) => {
-    //obtenemos quien eh el que ta ejecutando y su valor
-    const property = e.target.name
-    const valor = e.target.value
+    const property = e.target.name;
+    const valor = e.target.value;
+    const checked = e.target.checked;
 
-    //Para evitar el delay le enviamos el mismo objeto
-    validate({...form, [property]: valor})
-    setForm({...form, [property]: valor})
+    let newForm = { ...form };
+
+    if (property === 'tipo') {
+      if (checked && form[property].length < 2) {
+        newForm[property] = [...form[property], valor];
+      } else if (!checked) {
+        newForm[property] = form[property].filter((type) => type !== valor);
+      } else {
+        return;
+      }
+    } else {
+      newForm = { ...form, [property]: valor };
+    }
+
+    validate(newForm);
+    setForm(newForm);
   }
   const validate = (form) => {
     //Podemos validar con una exppresion regular
     //if(expresionregular.test(form.propiedadaTestear)) => todo bien
-    if(form.name === "aa"){
-      console.log("todo mal");
-      setErrors({...errors, name:"Hay un error en el names"})
-    }else{
-      console.log("Esta bien");
-      setErrors({...errors, name: ""})
+    let newErrors = {};
+
+    // Validar nombre: al menos 3 caracteres
+    if (form.name.length < 3) {
+      newErrors.name = 'Mínimo 3 caracteres.';
     }
+
+    // Validar campos numéricos: no vacíos y mayores a 0
+    for (const key of ['vida', 'ataque', 'defensa', 'ataqueEspecial', 'defenzaEspecial', 'velocidad', 'altura', 'peso']) {
+      if (!form[key] || form[key] < 0 || form[key] > 200) {
+        newErrors[key] = 'No debe ser 0';
+      }
+    }
+    // Validar tipo: no más de 2 tipos de Pokémon seleccionados
+    if (form.tipo.length > 2) {
+      newErrors.tipo[0] = 'No puedes seleccionar más de 2 tipos de Pokémon.';
+    }
+    setErrors(newErrors);
   }
   const submitHandler = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     console.log(form);
     axios.post('http://localhost:3001/posts', form)
-    .then(res => alert(res))
+      .then(res => alert(res));
   }
-
+  const isValid = (field) => {
+    return !errors[field];
+  }
   return (
-    <form onSubmit={submitHandler}>
-      <div>
-        <label>Name:</label>
-        <input name='name' type='text' value={form.name} onChange={changeHandler}/>
-        {
-          //logica para mostrar el error
-          errors.name && <span>{errors.name}</span> 
-          }
-        
-      </div>
-      <div>
-        <label>imagen:</label>
-        <input name='imagen' type='text' value={form.imagen} onChange={changeHandler}/>
-      </div>
-      <div>
-        <label>imagenGame:</label>
-        <input name='imagenGame' type='text' value={form.imagenGame} onChange={changeHandler}/>
-      </div>
-      <div>
-        <label>poderes:</label>
-        <input name='poderes' type='text' value={form.poderes} onChange={changeHandler}/>
-      </div>
-      <div>
-        <label>vida:</label>
-        <input name='vida' type='text' value={form.vida} onChange={changeHandler}/>
-      </div>
-      <div>
-        <label>ataque:</label>
-        <input name='ataque' type='text' value={form.ataque} onChange={changeHandler}/>
-      </div>
-      <div>
-        <label>defensa:</label>
-        <input name='defensa' type='text' value={form.defensa} onChange={changeHandler}/>
-      </div>
-      <div>
-        <label>ataqueEspecial:</label>
-        <input name='ataqueEspecial' type='text' value={form.ataqueEspecial} onChange={changeHandler}/>
-      </div>
-      <div>
-        <label>defenzaEspecial:</label>
-        <input name='defenzaEspecial' type='text' value={form.defenzaEspecial} onChange={changeHandler}/>
-      </div>
-      <div>
-        <label>velocidad:</label>
-        <input name='velocidad' type='text' value={form.velocidad} onChange={changeHandler}/>
-      </div>
-      <div>
-        <label>altura:</label>
-        <input name='altura' type='text' value={form.altura} onChange={changeHandler}/>
-      </div>
-      <div>
-        <label>tipo:</label>
-        <input name='tipo' type='text' value={form.tipo} onChange={changeHandler}/>
-      </div>
-      <div>
-        <label>peso:</label>
-        <input name='peso' type='text' value={form.peso} onChange={changeHandler}/>
-      </div>
-      <button type='submit'>Crear pokemon</button>
+    <div className={styles.fondo}>
+      <div className={styles.pokeFondo}></div>
+      <div className={styles.huevo}></div>
 
-    </form>
+      <div className={styles.contenido}>
+        
+        <div className={styles.data}>
+          <form className={styles.form} onSubmit={submitHandler}>
+            <CarouselForm
+              form={form}
+              errors={errors}
+              changeHandler={changeHandler}
+              validate={validate}
+              isValid={isValid}
+              onSubmit={submitHandler}
+            />
+            </form>
+        </div>
+      </div>
+
+
+
+    </div>
   )
 }
