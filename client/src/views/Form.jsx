@@ -100,7 +100,7 @@ export default function Form( ) {
       <div className={styles.contenido}>
         
         <div className={styles.data}>
-          <form className={styles.form} onSubmit={submitHandler}>
+          <form className={styles.form} >
             <CarouselForm
               form={form}
               errors={errors}

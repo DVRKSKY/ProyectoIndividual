@@ -48,7 +48,7 @@ $color-fondo: white
         background-image: url('../assets/huevo.svg')    
 
 
-        
+
     .contenido
         display: flex
         flex-direction: row
@@ -82,74 +82,7 @@ $color-fondo: white
                     flex-direction: row
                     justify-content: center
                     align-items: center
-                .ranges
-                    display: grid
-                    grid-template-columns: repeat(2, 1fr)
-                    gap: 1rem
-                    width: 100
-                    .range
-                        width: 100%
-                        display: flex
-                        flex-direction: column
-                        .nameRange
-                            font-size: 14px
-                            text-align: start
-                            justify-content: flex-start
-                            align-items: center
-                            position: relative
-                            font-weight: 500
-                            top: 0
-                        .rangeStyle
-                            -webkit-appearance: none
-                            width: 100%
-                            height: 5px
-                            background-color: #d3d3d3
-                            outline: none
-                        .rangeStyle::-webkit-slider-thumb 
-                            -webkit-appearance: none
-                            width: 15px
-                            height: 15px
-                            border-radius: 50px
-                            background-color: #035764
-                            cursor: pointer
-                        .rangeStyle::-moz-range-thumb 
-                            width: 20px
-                            height: 20px
-                            background-color: #035764
-                            cursor: pointer
+               
                             
-.input
-    display: flex
-    flex-direction: column
-    margin: 15px
-    position: relative
-    .inputForm
-        display: flex
-        border-radius: 50px
-        width: 100%
-        height: 30px
-        background-color: #FFF
-        border: 1px solid #035764
-        margin-left: 8.5px
-        margin-right: 8.5px
-        cursor: pointer
-        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out
-        text-align: center            
+
    
-    
-    .texto
-        font-size: .9rem
-        font-weight: bold
-        color: #035764
-        position: absolute
-        top: -18px
-        left: 25px
-    .error
-        display: flex
-        width: 100%
-        justify-content: center
-        color: red
-        margin: 4px
-        font-size: .8rem
-        flex-wrap: nowrap
-        text-align: center

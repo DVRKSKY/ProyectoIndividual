@@ -1,24 +1,25 @@
 import React, { useState } from 'react';
-//import styles from '../modules/carouselForm.module.sass';
-import styles from '../modules/form.module.sass'
+import styles from '../modules/carruselForm.module.sass';
+//import styles from '../modules/form.module.sass'
 const CarouselForm = ({ form, errors, changeHandler, validate, isValid, onSubmit }) => {
     
     const steps = [
-        { field: 'name', type: 'text', label: 'Name:' },
-        { field: 'imagen', type: 'text', label: 'Imagen:' },
-        { field: 'imagenGame', type: 'text', label: 'Imagen Game:' },
-        { field: 'vida', type: 'range', label: 'Vida:' },
-        { field: 'ataque', type: 'range', label: 'Ataque:' },
-        { field: 'defensa', type: 'range', label: 'Defensa:' },
-        { field: 'ataqueEspecial', type: 'range', label: 'Ataque Especial:' },
-        { field: 'defenzaEspecial', type: 'range', label: 'Defensa Especial:' },
-        { field: 'velocidad', type: 'range', label: 'Velocidad:' },
-        { field: 'altura', type: 'range', label: 'Altura:' },
-        { field: 'peso', type: 'range', label: 'Peso:' },
+        { field: 'name', type: 'text', label: 'Name:', header: 'Nombra' },
+        { field: 'imagen', type: 'text', label: 'Imagen:', header: 'Imagen' },
+        { field: 'imagenGame', type: 'text', label: 'Imagen Game:' , header: 'Pixelart' },
+        { field: 'vida', type: 'range', label: 'Vida:' , header: 'Vida' },
+        { field: 'ataque', type: 'range', label: 'Ataque:' , header: 'Ataque' },
+        { field: 'defensa', type: 'range', label: 'Defensa:' , header: 'Defensa' },
+        { field: 'ataqueEspecial', type: 'range', label: 'Ataque Especial:' , header: 'Ataque especial'},
+        { field: 'defenzaEspecial', type: 'range', label: 'Defensa Especial:' , header: 'Defensa especial' },
+        { field: 'velocidad', type: 'range', label: 'Velocidad:' , header: 'Velocidad' },
+        { field: 'altura', type: 'range', label: 'Altura:' , header: 'Altura'},
+        { field: 'peso', type: 'range', label: 'Peso:' , header: 'Peso'},
         {
             field: 'tipo',
             type: 'checkbox-group',
             label: 'Tipo:',
+            header: 'Tipo',
             options: [
               "normal", "fighting", "flying", "poison", "ground", "rock", "bug", "ghost",
               "steel", "fire", "water", "grass", "electric", "psychic", "ice", "dragon",
@@ -34,61 +35,67 @@ const CarouselForm = ({ form, errors, changeHandler, validate, isValid, onSubmit
     const currentField = steps[currentStep]; // Agrega esta línea
     
     
-    const nextStep = () => {
-        console.log("Next step");
-        setCurrentStep(currentStep + 1);
-        //if (isValid(currentField.field)) {
-        //}
-    };
-      
-    const handleSubmit = (e) => {
+    const nextStep = (e) => {
         e.preventDefault();
-        onSubmit();
+        if (isValid(currentField.field)) {
+          setCurrentStep(currentStep + 1);
+        }
     };
-    
       
-    const prevStep = () => {
-        console.log("Previous step");
+    const prevStep = (e) => {
+        //Se reiniciaba
+        e.preventDefault();
         setCurrentStep(currentStep - 1);
     };
     
     return (
         <div className={styles.carouselForm}>
-          <label>{currentField.label}</label>
           {currentField.type === 'checkbox-group' ? (
-            <div className={styles.checkboxGroup}>
-              {currentField.options.map((type) => (
-                <label key={type} className={styles.checkboxContainer}>
-                  <input
-                    type="checkbox"
-                    name="tipo"
-                    value={type}
-                    checked={form.tipo.includes(type)}
-                    onChange={changeHandler}
-                  />
-                  {type}
-                </label>
-              ))}
+            <div>
+                <h2 className={styles.titulo}>
+                    <span style={{ fontWeight: "bold" }}>{currentField.header}</span>  a tu nuevo pokemon
+                </h2>
+                <div className={styles.checkboxGroup}>
+                {currentField.options.map((type) => (
+                    <label key={type} className={styles.checkboxContainer}>
+                    <input
+                        type="checkbox"
+                        name="tipo"
+                        value={type}
+                        checked={form.tipo.includes(type)}
+                        onChange={changeHandler}
+                    />
+                    {type}
+                    </label>
+                ))}
+                </div>
             </div>
           ) : (
-            <input
-              name={currentField.field}
-              type={currentField.type}
-              value={form[currentField.field]}
-              onChange={changeHandler}
-              className={errors[currentField.field] ? styles.inputError : ''}
-            />
+            <div>
+                <h2 className={styles.titulo}>
+                    <span style={{ fontWeight: "bold" }}>{currentField.header}</span>  a tu nuevo pokemon
+                </h2>
+                <input
+                  name={currentField.field}
+                  type={currentField.type}
+                  value={form[currentField.field]}
+                  onChange={changeHandler}
+                  className={currentField.type === "range" ? styles.rangeStyle : styles.inputForm}
+                />
+            </div>
           )}
-          {errors[currentField.field] && <div className={styles.error}>{errors[currentField.field]}</div>}
-          <button onClick={prevStep} disabled={currentStep === 0}>Anterior</button>
-          <button onClick={nextStep} >Siguiente</button>
-
-          {/*<button
-            onClick={currentStep === totalSteps - 1 ? handleSubmit : nextStep}
-            disabled={currentStep === totalSteps - 1 && !isValid(currentField.field)}
-            >
-           {currentStep === totalSteps - 1 ? "Enviar" : "Siguiente"}
-          </button>*/}
+          <div>
+            {errors[currentField.field] && <div className={styles.error}>{errors[currentField.field]}</div>}
+          </div>
+          <div>
+            <button onClick={prevStep} disabled={currentStep === 0}>Anterior</button>
+            <button
+                onClick={currentStep === totalSteps - 1 ? onSubmit : nextStep}
+                disabled={errors[currentField.field]}
+                >
+            {currentStep === totalSteps - 1 ? "Enviar" : "Siguiente"}
+            </button>
+          </div>
 
 
 
