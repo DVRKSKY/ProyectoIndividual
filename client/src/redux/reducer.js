@@ -4,7 +4,7 @@ const initialState = {
     pokemons: [],
     pokemonDetail: [],
     colors: [],
-    colorBackground: "",
+    colorBackground: "rgba(250, 113, 121, 1)",
 }
 //Nuestra personita encargada de hacer todo
 const rootReducer = (state=initialState, action) => {
