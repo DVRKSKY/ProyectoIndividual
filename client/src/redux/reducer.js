@@ -1,4 +1,4 @@
-import { GET_POKEMONS, GET_POKEMON, GET_COLORS, SET_COLOR_BACKGROUND, FILTER_BY_ORIGIN } from './actions'
+import { GET_POKEMONS, GET_POKEMON, GET_COLORS, SET_COLOR_BACKGROUND, FILTER_BY_ORIGIN, MOVE_CARRUSEL, ACTIVE_INDEX } from './actions'
 
 const initialState = {
     pokemons: [],
@@ -6,12 +6,30 @@ const initialState = {
     pokemonsFiltered: [],
     colors: [],
     colorBackground: "rgba(250, 113, 121, 1)",
+    i: 0,
+    f: 4,
+    activeIndex: 0
 }
 //Nuestra personita encargada de hacer todo
 const rootReducer = (state=initialState, action) => {
     switch (action.type){
         case GET_POKEMONS:
-            return {...state, pokemons: action.payload, pokemonsFiltered: action.payload}
+            // Guardamos los pokemons actuales en una variable llamada beforePokemons
+            const beforePokemons = state.pokemons;
+            // Guardamos los pokemons que vienen en la acción (nuevos datos) en una variable llamada afterPokemons
+            const afterPokemons = action.payload;
+            // Creamos un array con los ids de los pokemons actuales llamado idsAnteriores
+            const idsAnteriores = beforePokemons.map(({ id }) => id);
+            // Filtramos los pokemons en afterPokemons que NO estén en idsAnteriores y los guardamos en pokemonsNuevos
+            const pokemonsNuevos = afterPokemons.filter(({ id }) => !idsAnteriores.includes(id));
+            // Concatenamos los arrays beforePokemons y pokemonsNuevos para crear un array actualizado llamado updatedPokemons
+            const updatedPokemons = [...beforePokemons, ...pokemonsNuevos];
+            // Retornamos un nuevo estado con los pokemons actualizados y la lista filtrada de pokemons actualizada
+            return {
+                ...state,
+                pokemons: updatedPokemons,
+                pokemonsFiltered: updatedPokemons,
+            };
         case GET_POKEMON:
             return {...state, pokemonDetail: action.payload}
         case GET_COLORS:
@@ -58,7 +76,11 @@ const rootReducer = (state=initialState, action) => {
                 }
                 return {...state, pokemonsFiltered: newFilter}
             }
-            
+        case MOVE_CARRUSEL:
+            return {...state, i: action.payload[0], f:action.payload[1]}
+        case ACTIVE_INDEX:
+            return {...state, activeIndex: action.payload}
+
         default:
             return {...state, colorBackground: action.payload}
     }

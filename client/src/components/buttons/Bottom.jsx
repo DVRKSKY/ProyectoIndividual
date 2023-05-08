@@ -23,12 +23,14 @@ export default function Bottom({texto1, texto2, boton1, boton2,retroceder, avanz
             </div>
             <div className={style.texto}>{texto1}</div>
         </div>
-        <div className={style.contenidoBoton}>
-            <div className={style.boton} onClick={()=> avanzar()} >
+        {boton2 && texto2 && (
+          <div className={style.contenidoBoton}>
+            <div className={style.boton} onClick={() => avanzar()}>
               <span>{boton2}</span>
             </div>
             <div className={style.texto}>{texto2}</div>
-        </div>
+          </div>
+        )}
     </div>
   )
 }

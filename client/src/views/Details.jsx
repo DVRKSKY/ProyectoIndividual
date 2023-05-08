@@ -108,12 +108,11 @@ export default function Details() {
       <div className={style.actions}>
         <Bottom
           texto1="Volver"
-          texto2="Seleccionar"
           boton1="B"
-          boton2="A"
           retroceder={volver}
+
         />
-        </div>
+      </div>
     </div>
   )
 }

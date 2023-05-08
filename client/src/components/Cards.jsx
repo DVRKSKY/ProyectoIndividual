@@ -4,21 +4,19 @@ import Bottom from '../components/buttons/Bottom'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from "react-router-dom"
 import Card from './Card';
-import { getColors, setColorBackground } from '../redux/actions';
+import { getColors, setColorBackground, getPokemons, moveCarrusel, activeIndexHandler } from '../redux/actions';
 
 
 
 export default function Cards({ avanzarFunction , retrocederFunction}) {
     //Mejoras, crear componente card, y separalo para poder modularizarlo
-    
-    const pokemonsFiltered = useSelector(state => state.pokemonsFiltered);
+  const pokemonsFiltered = useSelector(state => state.pokemonsFiltered);
+  const i = useSelector(state => state.i)
+  const f = useSelector(state => state.f)
+  const activeIndex = useSelector(state => state.activeIndex)
+
   const navigate = useNavigate();
-
   const dispatch = useDispatch();
-
-  const [i, setI] = useState(0);
-  const [f, setF] = useState(4);
-  const [activeIndex, setActiveIndex] = useState(0);
 
   const verDetails = ruta => {
     navigate(ruta);
@@ -28,31 +26,39 @@ export default function Cards({ avanzarFunction , retrocederFunction}) {
 
   const avanzar = () => {
     setTimeout(() => {
-      setI(prevI => prevI + 1);
-      setF(prevF => prevF + 1);
-      setActiveIndex(prevActiveIndex => (prevActiveIndex + 1) % pokemonsFiltered.length);
+      dispatch(moveCarrusel(1))
+      dispatch(getPokemons(i + 1))
+      dispatch(activeIndexHandler((activeIndex + 1) % pokemonsFiltered.length))
     }, 500);
   };
 
   const retroceder = () => {
-    setTimeout(() => {
-      setI(prevI => prevI - 1);
-      setF(prevF => prevF - 1);
-      setActiveIndex(prevActiveIndex => (prevActiveIndex - 1 + pokemonsFiltered.length) % pokemonsFiltered.length);
-    }, 500);
+    if(activeIndex === 0) {
+      navigate("/")
+    }else{
+      setTimeout(() => {
+        dispatch(moveCarrusel(- 1))
+        dispatch(
+          activeIndexHandler(
+            ((activeIndex - 1) + pokemonsFiltered.length) %
+              pokemonsFiltered.length
+          )
+        );
+      }, 500);
+    }
   };
 
   useEffect(() => {
     dispatch(getColors());
-  }, [dispatch]);
+    dispatch(getPokemons(i))
+  }, [dispatch, i]);
+
 
   useEffect(() => {
-    const newArrayMostrado = pokemonsFiltered.slice(i, f); // Mover la lógica de 'get' aquí
+    const newArrayMostrado = pokemonsFiltered.slice(i, f); 
     setArrayMostrado(newArrayMostrado);
     if (newArrayMostrado) dispatch(setColorBackground(newArrayMostrado?.[0]?.tipo[0]));
   }, [i, f, dispatch, pokemonsFiltered]);
-
-
     return (
         <div className={style.contenido}>
         <div className={style.cardsWrapper}>

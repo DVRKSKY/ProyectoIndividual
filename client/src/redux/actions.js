@@ -6,9 +6,19 @@ export const GET_COLORS = "GET_COLORS"
 export const SET_COLOR_BACKGROUND = "SET_COLOR_BACKGROUND"
 export const FILTER_BY_ORIGIN = "FILTER_BY_ORIGIN"
 
-export const getPokemons = () => {
+
+//Mover carrusel
+export const MOVE_CARRUSEL = "MOVE_CARRUSEL"
+export const ACTIVE_INDEX = "ACTIVE_INDEX"
+
+export const getPokemons = (pagina) => {
     return async function(dispatch){
-        const apiData = await axios.get("http://localhost:3001/pokemons/home")
+        let apiData
+        if( !pagina){
+            apiData = await axios.get("http://localhost:3001/pokemons/home")
+        }else{
+            apiData = await axios.get(`http://localhost:3001/pokemons/home?pagina=${pagina}`)
+        }
         const pokemons = apiData.data
         dispatch({type: GET_POKEMONS, payload: pokemons})
     }
@@ -41,7 +51,26 @@ export const setColorBackground = (type) => {
 export const filterByOrigin = (origen) => {
     return {type: FILTER_BY_ORIGIN, payload: origen}
 }
+
+export const moveCarrusel = (valor) => {
+    return function(dispatch, getState){
+        const currentValueI = getState().i
+        const currentValueF = getState().f
+
+        const newValueI = currentValueI + valor
+        const newValueF = currentValueF + valor
+        const mover = [newValueI, newValueF]
+        dispatch({type: MOVE_CARRUSEL, payload: mover})
+    }
+}
+
+
+export const activeIndexHandler = (valor) => {
+    return {type: ACTIVE_INDEX, payload: valor}
+
+}
 /*
+
 Action creator normalita
 export const filterRamdom = () => {
     dispatch({type:"FILTER_BY_SOURCE"})
