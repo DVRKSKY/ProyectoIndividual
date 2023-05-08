@@ -17,7 +17,7 @@ export default function Buscar() {
             newErrors = 'Mínimo 3 caracteres.';
         } else {
             try {
-                const apiData = await axios.get(`http://localhost:3001/pokemons/home?name=${inputName}`);
+                const apiData = await axios.get(`http://localhost:3001/pokemons?name=${inputName}`);
                 const info = apiData.data;
                 if (info.length === 0) {
                     newErrors = "El pokemon no se encuentra en la base de datos ni en la API.";

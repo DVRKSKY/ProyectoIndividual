@@ -47,7 +47,7 @@ export default function Cards({ avanzarFunction , retrocederFunction}) {
       }, 500);
     }
   };
-
+  
   useEffect(() => {
     dispatch(getColors());
     dispatch(getPokemons(i))

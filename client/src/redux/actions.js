@@ -15,9 +15,9 @@ export const getPokemons = (pagina) => {
     return async function(dispatch){
         let apiData
         if( !pagina){
-            apiData = await axios.get("http://localhost:3001/pokemons/home")
+            apiData = await axios.get("http://localhost:3001/pokemons")
         }else{
-            apiData = await axios.get(`http://localhost:3001/pokemons/home?pagina=${pagina}`)
+            apiData = await axios.get(`http://localhost:3001/pokemons?pagina=${pagina}`)
         }
         const pokemons = apiData.data
         dispatch({type: GET_POKEMONS, payload: pokemons})
@@ -26,7 +26,7 @@ export const getPokemons = (pagina) => {
 
 export const getPokemon = (id) => {
     return async function(dispatch){
-        const apiData = await axios.get(`http://localhost:3001/pokemons/home/${id}`)
+        const apiData = await axios.get(`http://localhost:3001/pokemons/${id}`)
         const pokemon = apiData.data
         dispatch({type: GET_POKEMON, payload: pokemon})
     }
@@ -34,7 +34,7 @@ export const getPokemon = (id) => {
 
 export const getColors = () => {
     return async function(dispatch) {
-        const apiData = await axios.get(`http://localhost:3001/pokemons/types`)
+        const apiData = await axios.get(`http://localhost:3001/types`)
         const pokemonTypes = apiData.data
         dispatch({type: GET_COLORS, payload: pokemonTypes})
     }
@@ -42,7 +42,7 @@ export const getColors = () => {
 
 export const setColorBackground = (type) => {
     return async function(dispatch){
-        const apiData = await axios.get(`http://localhost:3001/pokemons/types`)
+        const apiData = await axios.get(`http://localhost:3001/types`)
         const pokemonColor = apiData.data.filter(c => c.name === type)
         const color = pokemonColor[0]?.color
         dispatch({type: SET_COLOR_BACKGROUND, payload: color})
