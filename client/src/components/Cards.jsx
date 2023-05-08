@@ -1,61 +1,57 @@
 import React, { useEffect, useState,  } from 'react'
 import style from '../modules/cards.module.sass'
 import Bottom from '../components/buttons/Bottom'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from "react-router-dom"
 import Card from './Card';
 import { getColors, setColorBackground } from '../redux/actions';
-import { useDispatch } from 'react-redux';
 
 
 
 export default function Cards({ avanzarFunction , retrocederFunction}) {
     //Mejoras, crear componente card, y separalo para poder modularizarlo
-    const pokemons = useSelector(state => state.pokemons)
-
-    const navigate = useNavigate()
-
-
     
-    const dispatch = useDispatch();
-  
+    const pokemonsFiltered = useSelector(state => state.pokemonsFiltered);
+  const navigate = useNavigate();
 
-    const [i, setI] = useState(0)
-    const [f, setF] = useState(4)
-    const [activeIndex, setActiveIndex] = useState(0);
-    //Ir a la ruta
-    const verDetails = (ruta) =>{
-      navigate(ruta)
-    }
-    
-    const [arrayMostrado, setArrayMostrado] = useState([]);
-    const avanzar =()=>{
-      //Enviamos al state el typo depokemon al avanzar para cambiar de color
-      
-      setTimeout(()=>{
-        setI(prevI => prevI + 1)
-        setF(prevF => prevF + 1)
-        setActiveIndex((prevActiveIndex) => (prevActiveIndex + 1) % pokemons.length);
-      }, 500)
-    }
-    const retroceder =()=>{
-        //Enviamos al state el typo depokemon al retroceder, para cambiar de color
+  const dispatch = useDispatch();
 
-        setTimeout(()=>{
-          setI(prevI => prevI - 1)
-          setF(prevF => prevF - 1)
-          setActiveIndex((prevActiveIndex) => (prevActiveIndex - 1 + pokemons.length) % pokemons.length);
-        },500)
-    }
-    useEffect(()=>{
-      const newArrayMostrado = pokemons.slice(i, f) // Mover la lógica de 'get' aquí
-      setArrayMostrado(newArrayMostrado);
-      if(newArrayMostrado) dispatch(setColorBackground(newArrayMostrado?.[0]?.tipo[0]))
-  }, [i, f, dispatch, pokemons])
+  const [i, setI] = useState(0);
+  const [f, setF] = useState(4);
+  const [activeIndex, setActiveIndex] = useState(0);
 
-    useEffect(() => {
-      dispatch(getColors());
-    }, [dispatch]);
+  const verDetails = ruta => {
+    navigate(ruta);
+  };
+
+  const [arrayMostrado, setArrayMostrado] = useState([]);
+
+  const avanzar = () => {
+    setTimeout(() => {
+      setI(prevI => prevI + 1);
+      setF(prevF => prevF + 1);
+      setActiveIndex(prevActiveIndex => (prevActiveIndex + 1) % pokemonsFiltered.length);
+    }, 500);
+  };
+
+  const retroceder = () => {
+    setTimeout(() => {
+      setI(prevI => prevI - 1);
+      setF(prevF => prevF - 1);
+      setActiveIndex(prevActiveIndex => (prevActiveIndex - 1 + pokemonsFiltered.length) % pokemonsFiltered.length);
+    }, 500);
+  };
+
+  useEffect(() => {
+    dispatch(getColors());
+  }, [dispatch]);
+
+  useEffect(() => {
+    const newArrayMostrado = pokemonsFiltered.slice(i, f); // Mover la lógica de 'get' aquí
+    setArrayMostrado(newArrayMostrado);
+    if (newArrayMostrado) dispatch(setColorBackground(newArrayMostrado?.[0]?.tipo[0]));
+  }, [i, f, dispatch, pokemonsFiltered]);
+
 
     return (
         <div className={style.contenido}>
@@ -74,6 +70,9 @@ export default function Cards({ avanzarFunction , retrocederFunction}) {
           />
           );
         })}
+        </div>
+        <div className={style.noFound} style={{ display: pokemonsFiltered.length === 0 ? 'block' : 'none' }}>
+          No hay {'>'}_{'<'}
         </div>
         <div className={style.actions}>
           <Bottom

@@ -4,6 +4,7 @@ export const GET_POKEMONS = "GET_POKEMONS"
 export const GET_POKEMON  =  "GET_POKEMON"
 export const GET_COLORS = "GET_COLORS"
 export const SET_COLOR_BACKGROUND = "SET_COLOR_BACKGROUND"
+export const FILTER_BY_ORIGIN = "FILTER_BY_ORIGIN"
 
 export const getPokemons = () => {
     return async function(dispatch){
@@ -36,6 +37,9 @@ export const setColorBackground = (type) => {
         const color = pokemonColor[0]?.color
         dispatch({type: SET_COLOR_BACKGROUND, payload: color})
     }
+}
+export const filterByOrigin = (origen) => {
+    return {type: FILTER_BY_ORIGIN, payload: origen}
 }
 /*
 Action creator normalita
