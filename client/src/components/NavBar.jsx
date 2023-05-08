@@ -9,9 +9,17 @@ export default function NavBar() {
   }
   return (
     <div className={style.contenido}>
-        <Chip texto="Buscar" icono="search" />
+        <Chip texto="Buscar" icono="search" funcion={handleClick} ruta="/buscar"/>
         <Chip texto="Agregar" icono="add"  funcion={handleClick} ruta="/create"/>
-        <Chip texto="Filtrar" icono="sort" />
+        {/*<Chip texto="Filtrar" icono="sort" />*/}
+        {/*<div>
+          <select>
+            <option value="DEFAULT" disable>Filtrar por origen</option>
+            <option value="db" >Base de datos</option>
+            <option value="api" >Api pokemon</option>
+          </select>
+          
+        </div>*/}
     </div>
   )
 }

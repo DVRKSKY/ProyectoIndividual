@@ -18,7 +18,8 @@ export default function Details() {
   //Volver
   const navigate = useNavigate()
   const volver = () => {
-    navigate("/home")
+    //Volvemos a la pagina anterior
+    navigate(-1)
   }
 
   //Cargamos la data de los detalles en el momento que el componente  se monta

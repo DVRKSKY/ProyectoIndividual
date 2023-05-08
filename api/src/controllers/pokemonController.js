@@ -68,20 +68,33 @@ const getAllPokemons = async (limit, offset) => {
     return data
 }
 const searchPokemonByName = async (name) => {
-     // Pidiendo al database
-    const dataBasePokemon = await Pokemon.findAll({ where: { name: name } });
-    const dataBasePokemonPlain = dataBasePokemon.map((pokemon) => pokemon.toJSON());
-    // Pidiendo data al Api, usando nuestro utils
+  // Pidiendo al database
+  const dataBasePokemon = await Pokemon.findAll({ where: { name: name } });
+  const dataBasePokemonPlain = dataBasePokemon.map((pokemon) => pokemon.toJSON());
+  
+  if (dataBasePokemonPlain.length > 0) {
+    // Si el pokemon se encuentra en la base de datos, devuelve los datos del pokemon de la base de datos
+    return dataBasePokemonPlain;
+  } else {
+    // Si el pokemon no se encuentra en la base de datos, continua con la búsqueda en la API
     const arr = [{ name: name, url: `https://pokeapi.co/api/v2/pokemon/${name}` }];
     let formatData = [];
     try {
-        formatData = await formatArrayApi(arr);
+      formatData = await formatArrayApi(arr);
+      if (formatData.length === 0) {
+        // Si no se encontró ningún pokemon en la API, lanza un error
+        throw new Error("El pokemon no se encuentra.");
+      } else {
+        // Si el pokemon se encuentra en la API, devuelve los datos del pokemon de la API
+        return formatData;
+      }
     } catch (error) {
-        console.error("El Pokémon no se encuentra en la API:", error.message);
+      // Si hay algún otro error al buscar en la API, lanza un error con el mensaje original
+      throw new Error("El Pokémon no se encuentra en la base de datos ni en la API.");
     }
-    return [...formatData, ...dataBasePokemonPlain];
+  }
 };
-  
+
 const getTypesPokemon = async () =>{
     //Creamos el array de colors
     const typeColors = {
