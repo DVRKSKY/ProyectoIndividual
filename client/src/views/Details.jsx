@@ -29,6 +29,7 @@ export default function Details() {
   },[dispatch,id])
   
   const getPokemonRadarData = () => {
+    //Usamos detail[0] porque devuelve un array de coincidencias, pero solo queremos el primero 
     return {
       labels: ['Vida', 'Ataque', 'A. especial', 'Velocidad' , 'D. especial','Defensa', ],
       datasets: [
@@ -95,7 +96,7 @@ export default function Details() {
           </div>
           <div className={style.contenido}>
             <h5 className={style.titulo}>tipo: </h5>
-            <h5 className={style.texto}>{detail[0]?.tipo}</h5>
+            <h5 className={style.texto}>{detail[0]?.types?.[0]}, {detail[0]?.types?.[1]}</h5>
           </div>
         </div>
       </div>

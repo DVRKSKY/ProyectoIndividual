@@ -60,7 +60,7 @@ const createPokemonHandler = async (req, res) => {
             altura,
             peso,
             tipo,)
-        res.status(201).json("Creado Exitosamente")
+        res.status(201).json(newPokemon )
     } catch (error) {
         res.status(400).json({error: error.message})
     }

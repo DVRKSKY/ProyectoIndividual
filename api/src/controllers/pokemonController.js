@@ -20,7 +20,7 @@ const formatArrayApi = async (arr) => {
         velocidad: data?.stats?.find(i => i.stat.name === "speed")?.base_stat ?? 0,
         altura: data?.height ?? 0,
         peso: data?.weight ?? 0,
-        tipo: data?.types?.map(({type}) => type.name),
+        types: data?.types?.map(({type}) => type.name),
         created: false,
       };
     }));
@@ -30,33 +30,61 @@ const formatArrayApi = async (arr) => {
 //Importamos el modelo para poder crear un nuevo pokemon
 //.create devuelve una promesa
 //Asinc y await devuelve una promesa
+const createPokemon = async (name, imagen, imagenGame, poderes, vida, ataque, defensa, ataqueEspecial, defenzaEspecial, velocidad, altura, peso, tipo,) => {
+  const newPokemon = await Pokemon.create(
+      {name, imagen, imagenGame, poderes, vida, ataque, defensa, ataqueEspecial, defenzaEspecial, velocidad, altura, peso}
+  );
+  
+  // Convertimos 'tipo' en un array si no lo es ya
+  const tipoArray = Array.isArray(tipo) ? tipo : [tipo];
 
-const createPokemon = async (name, imagen, imagenGame, poderes, vida, ataque, defensa, ataqueEspecial, defenzaEspecial, velocidad, altura, peso, tipo,) => await Pokemon.create(
-    {name, imagen, imagenGame, poderes, vida, ataque,defensa,ataqueEspecial,defenzaEspecial, velocidad,altura,peso,tipo})
+  // Ahora asociamos los types a este nuevo Pokemon.
+  const types = await Types.findAll({
+      where: {
+          name: tipoArray,
+      },
+  });
+  console.log(types, "::::TYPES")
+  if (types.length !== tipoArray.length) {
+    throw new Error('Some types could not be found.');
+  }
+  await newPokemon.setTypes(types);
+
+  // Devolvemos el Pokémon que ya tienes y los tipos que acabas de asociar a él.
+
+  return { 
+    ...newPokemon.get({ plain: true }), 
+    types: types.map(type => type.get({ plain: true })) 
+  };
+}
+
+
 const getPokemonById = async (id, source) => {
-    //Falta darle formato al id y ademas traemos los scores relacionados a ese pokemon
-    const arr = [{url:`https://pokeapi.co/api/v2/pokemon/${id}`}]
-    if( source === "api" ){
-        const pokemon = await formatArrayApi(arr)    
-        return pokemon
-    }else{
-        const data = await Pokemon.findByPk(id, 
-            {include:{
-                model: Score,
-                attributes: ["id","record"]
-            }}
-        )
-        const pokemon = []
-        pokemon.push(data)
-
-        return pokemon
-    }
-    
+  if( source === "api" ){
+      const arr = [{url:`https://pokeapi.co/api/v2/pokemon/${id}`}]
+      const pokemon = await formatArrayApi(arr)    
+      return pokemon
+  }else{
+      const data = await Pokemon.findByPk(id, 
+          {include:{
+              model: Types,
+          }}
+      )
+      if (!data) {
+          throw new Error(`No Pokemon found with id: ${id}`);
+      }
+      const pokemon = [data.toJSON()]
+      pokemon[0].types = pokemon[0].types.map(type => type.name)
+      return pokemon
+  }
 }
 
 const getAllPokemons = async (offset) => {
-    //Vamos a buscar en Db
-    const dbPromise = Pokemon.findAll();
+    //Vamos a buscar en Db y vamos a incluir los tipos relacionados
+    const dbPromise = Pokemon.findAll({
+      include: Types,
+    });
+    
     //Vamos a buscar en Api, Limitando la cantidad de datos traidos
     const apiPromise = axios.get(`https://pokeapi.co/api/v2/pokemon/?limit=12&offset=${offset}`)
     //Traemos la data
@@ -64,7 +92,16 @@ const getAllPokemons = async (offset) => {
     const apiPokemons = apiResponse.data.results;
     //Le damos formato a la data que viene por la Api , es una promesa no olvidar
     const formatDataApi = await formatArrayApi(apiPokemons)
-    const data = [...databasePokemon, ...formatDataApi];
+    
+    //Le damos formato a nuestos tipos de la base de datos
+    const databasePokemonFormatted = databasePokemon.map(pokemon => {
+      const pokemonJson = pokemon.toJSON();
+      return {
+          ...pokemonJson,
+          types: pokemonJson.types.map(type => type.name)
+      };
+    });
+    const data = [...databasePokemonFormatted, ...formatDataApi];
     return data
 }
 const searchPokemonByName = async (name) => {

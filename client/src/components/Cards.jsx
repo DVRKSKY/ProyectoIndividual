@@ -62,7 +62,8 @@ export default function Cards({ avanzarFunction , retrocederFunction}) {
     console.log(pokemonsFiltered)
     setArrayMostrado(newArrayMostrado);
     //COMPROBAMOS LA existencia del objeto
-    if (newArrayMostrado) dispatch(setColorBackground(newArrayMostrado?.[0]?.tipo[0]));
+    console.log(newArrayMostrado?.[0]?.types[0])
+    if (newArrayMostrado) dispatch(setColorBackground(newArrayMostrado?.[0]?.types[0]));
   }, [i, f, dispatch, pokemonsFiltered]);
     return (
         <div className={style.contenido}>
@@ -75,7 +76,7 @@ export default function Cards({ avanzarFunction , retrocederFunction}) {
               name={poke.name}
               imagen={poke.imagen}
               imagenOriginal={poke.imagenOriginal}
-              tipo={poke.tipo}
+              tipo={poke.types}
               onCardClick={() => verDetails(`/details/${poke.id}`)}
               isActive={index === (activeIndex - i) % arrayMostrado.length}
           />

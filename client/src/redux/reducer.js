@@ -70,7 +70,7 @@ const rootReducer = (state=initialState, action) => {
 
             //Filtro por tipo
             }else{
-                const newFilter = state.pokemonsFiltered.filter((pokemon) => (pokemon.tipo[0] === action.payload || pokemon.tipo[1] === action.payload))
+                const newFilter = state.pokemonsFiltered.filter((pokemon) => (pokemon.types[0] === action.payload || pokemon.types[1] === action.payload))
                 if(newFilter.length <= 0){
                     console.log("NO HAY POKEMONS")
                 }else{

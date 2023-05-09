@@ -58,10 +58,10 @@ module.exports = (sequelize) => {
       type: DataTypes.INTEGER,
       defaultValue: 0,
     },
-    tipo: {
+    /*tipo: {
       type: DataTypes.ARRAY(DataTypes.STRING),
       defaultValue: [],
-    },
+    },*/
     created: {
       type: DataTypes.BOOLEAN,
       defaultValue: true,
