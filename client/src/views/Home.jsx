@@ -6,7 +6,7 @@ import NavBar from '../components/NavBar';
 
 
 export default function Home() {
-  //Cargamos la data en el momento que el componente Home se monta
+  
   
   return (
     <div className={style.fondo}>

@@ -8,7 +8,9 @@ const initialState = {
     colorBackground: "rgba(250, 113, 121, 1)",
     i: 0,
     f: 4,
-    activeIndex: 0
+    activeIndex: 0,
+    filtroActivado: false,
+
 }
 //Nuestra personita encargada de hacer todo
 const rootReducer = (state=initialState, action) => {
@@ -39,32 +41,32 @@ const rootReducer = (state=initialState, action) => {
         case FILTER_BY_ORIGIN:
             if(action.payload === "db"){
                 const newFilter = state.pokemons.filter((pokemon) => pokemon.created === true )
-                return {...state, pokemonsFiltered: newFilter}
+                return {...state, pokemonsFiltered: newFilter, filtroActivado: true, i:0, f:4 ,activeIndex: 0}
             }else if(action.payload ==="api"){
                 const newFilter = state.pokemons.filter((pokemon) => pokemon.created === false )
-                return {...state, pokemonsFiltered: newFilter}
+                return {...state, pokemonsFiltered: newFilter, filtroActivado: true, i:0, f:4 ,activeIndex: 0}
             }else if(action.payload === "all"){
-                return {...state, pokemonsFiltered: state.pokemons}
+                return {...state, pokemonsFiltered: state.pokemons , filtroActivado: false}
 
             //Ordenamiento por nombre
             } else if(action.payload === "asc"){
                 //evitamos mutar el estado original y creamos un nuevo array
                 const newOrd = [...state.pokemonsFiltered].sort((a,b)=> a.name.localeCompare(b.name))
-                return {...state, pokemonsFiltered: newOrd}
+                return {...state, pokemonsFiltered: newOrd , filtroActivado: true , i:0, f:4 ,activeIndex: 0}
 
             } else if(action.payload === "des"){
                 //evitamos mutar el estado original y creamos un nuevo array
                 const newOrd = [...state.pokemonsFiltered].sort((a,b)=> b.name.localeCompare(a.name))
-                return {...state, pokemonsFiltered: newOrd}
+                return {...state, pokemonsFiltered: newOrd , filtroActivado: true , i:0, f:4 ,activeIndex: 0}
             //Ordenamiento por ataque
             }else if( action.payload === "ataqueAsc"){
                 const newOrd = [...state.pokemonsFiltered].sort((a,b)=> a.ataque - b.ataque)
                 console.log(newOrd);
-                return {...state, pokemonsFiltered: newOrd}
+                return {...state, pokemonsFiltered: newOrd , filtroActivado: true , i:0, f:4 ,activeIndex: 0}
             }else if( action.payload === "ataqueDes"){
                 const newOrd = [...state.pokemonsFiltered].sort((a,b)=> b.ataque - a.ataque);
                 console.log(newOrd);
-                return {...state, pokemonsFiltered: newOrd};
+                return {...state, pokemonsFiltered: newOrd , filtroActivado: true , i:0, f:4 ,activeIndex: 0};
 
             //Filtro por tipo
             }else{
@@ -74,7 +76,7 @@ const rootReducer = (state=initialState, action) => {
                 }else{
                     console.log(newFilter, ":::Filtros por tipo")
                 }
-                return {...state, pokemonsFiltered: newFilter}
+                return {...state, pokemonsFiltered: newFilter , filtroActivado: true , i:0, f:4 ,activeIndex: 0}
             }
         case MOVE_CARRUSEL:
             return {...state, i: action.payload[0], f:action.payload[1]}

@@ -58,7 +58,7 @@ const getAllPokemons = async (offset) => {
     //Vamos a buscar en Db
     const dbPromise = Pokemon.findAll();
     //Vamos a buscar en Api, Limitando la cantidad de datos traidos
-    const apiPromise = axios.get(`https://pokeapi.co/api/v2/pokemon/?limit=60&offset=${offset}`)
+    const apiPromise = axios.get(`https://pokeapi.co/api/v2/pokemon/?limit=12&offset=${offset}`)
     //Traemos la data
     const [databasePokemon, apiResponse] = await Promise.all([dbPromise, apiPromise]);
     const apiPokemons = apiResponse.data.results;

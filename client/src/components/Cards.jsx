@@ -14,6 +14,7 @@ export default function Cards({ avanzarFunction , retrocederFunction}) {
   const i = useSelector(state => state.i)
   const f = useSelector(state => state.f)
   const activeIndex = useSelector(state => state.activeIndex)
+  const filtroActivado = useSelector(state => state.filtroActivado)
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -27,8 +28,11 @@ export default function Cards({ avanzarFunction , retrocederFunction}) {
   const avanzar = () => {
     setTimeout(() => {
       dispatch(moveCarrusel(1))
-      dispatch(getPokemons(i + 1))
-      dispatch(activeIndexHandler((activeIndex + 1) % pokemonsFiltered.length))
+      if(!filtroActivado){
+        dispatch(getPokemons(i + 1))
+      }
+      //incrementamos el valor de activeIndex, para saber siempre cual es el primero
+      dispatch(activeIndexHandler(i + 1))
     }, 500);
   };
 
@@ -39,10 +43,7 @@ export default function Cards({ avanzarFunction , retrocederFunction}) {
       setTimeout(() => {
         dispatch(moveCarrusel(- 1))
         dispatch(
-          activeIndexHandler(
-            ((activeIndex - 1) + pokemonsFiltered.length) %
-              pokemonsFiltered.length
-          )
+          activeIndexHandler(activeIndex - 1)
         );
       }, 500);
     }
@@ -50,13 +51,17 @@ export default function Cards({ avanzarFunction , retrocederFunction}) {
   
   useEffect(() => {
     dispatch(getColors());
-    dispatch(getPokemons(i))
-  }, [dispatch, i]);
+    if(!filtroActivado){
+      dispatch(getPokemons(i))
+    }
+  }, [dispatch, i, filtroActivado]);
 
 
   useEffect(() => {
     const newArrayMostrado = pokemonsFiltered.slice(i, f); 
+    console.log(pokemonsFiltered)
     setArrayMostrado(newArrayMostrado);
+    //COMPROBAMOS LA existencia del objeto
     if (newArrayMostrado) dispatch(setColorBackground(newArrayMostrado?.[0]?.tipo[0]));
   }, [i, f, dispatch, pokemonsFiltered]);
     return (
@@ -82,7 +87,7 @@ export default function Cards({ avanzarFunction , retrocederFunction}) {
         </div>
         <div className={style.actions}>
           <Bottom
-            texto1="Anterior"
+            texto1={activeIndex === 0 ? "Salir" : "Anterior"}
             texto2="Siguiente"
             boton1="B"
             boton2="A"
