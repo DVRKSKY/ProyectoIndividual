@@ -5,8 +5,9 @@ export const GET_POKEMON  =  "GET_POKEMON"
 export const GET_COLORS = "GET_COLORS"
 export const SET_COLOR_BACKGROUND = "SET_COLOR_BACKGROUND"
 export const FILTER_BY_ORIGIN = "FILTER_BY_ORIGIN"
-
-
+export const POKEMON_LOADING = "POKEMON_LOADING"
+export const POKEMON_LOADED = "POKEMON_LOADED"
+export const CLEAR_POKEMON_DETAIL = 'CLEAR_POKEMON_DETAIL'
 //Mover carrusel
 export const MOVE_CARRUSEL = "MOVE_CARRUSEL"
 export const ACTIVE_INDEX = "ACTIVE_INDEX"
@@ -26,9 +27,11 @@ export const getPokemons = (pagina) => {
 
 export const getPokemon = (id) => {
     return async function(dispatch){
+        dispatch({type: 'POKEMON_LOADING'});
         const apiData = await axios.get(`http://localhost:3001/pokemons/${id}`)
         const pokemon = apiData.data
-        dispatch({type: GET_POKEMON, payload: pokemon})
+        dispatch({type: 'GET_POKEMON', payload: pokemon})
+        dispatch({type: 'POKEMON_LOADED'});
     }
 }
 
@@ -69,6 +72,7 @@ export const activeIndexHandler = (valor) => {
     return {type: ACTIVE_INDEX, payload: valor}
 
 }
+export const clearPokemonDetail = () => ({ type: CLEAR_POKEMON_DETAIL  });
 /*
 
 Action creator normalita

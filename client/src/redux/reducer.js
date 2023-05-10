@@ -1,4 +1,4 @@
-import { GET_POKEMONS, GET_POKEMON, GET_COLORS, SET_COLOR_BACKGROUND, FILTER_BY_ORIGIN, MOVE_CARRUSEL, ACTIVE_INDEX } from './actions'
+import { GET_POKEMONS, GET_POKEMON, GET_COLORS, SET_COLOR_BACKGROUND, FILTER_BY_ORIGIN, MOVE_CARRUSEL, ACTIVE_INDEX, POKEMON_LOADED, POKEMON_LOADING, CLEAR_POKEMON_DETAIL } from './actions'
 
 const initialState = {
     pokemons: [],
@@ -10,6 +10,7 @@ const initialState = {
     f: 4,
     activeIndex: 0,
     filtroActivado: false,
+    pokemonLoading: true,
 
 }
 //Nuestra personita encargada de hacer todo
@@ -82,7 +83,12 @@ const rootReducer = (state=initialState, action) => {
             return {...state, i: action.payload[0], f:action.payload[1]}
         case ACTIVE_INDEX:
             return {...state, activeIndex: action.payload}
-
+        case POKEMON_LOADING:
+            return { ...state, pokemonLoading: true };
+        case POKEMON_LOADED:
+            return { ...state, pokemonLoading: false };
+        case CLEAR_POKEMON_DETAIL:
+            return { ...state,  pokemonDetail: state.pokemonDetail, pokemonLoading: state.pokemonLoading  };
         default:
             return {...state, colorBackground: action.payload}
     }

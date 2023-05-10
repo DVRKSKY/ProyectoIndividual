@@ -6,13 +6,14 @@ import Bottom from '../components/buttons/Bottom'
 import { Radar } from 'react-chartjs-2'
 import { useSelector, useDispatch } from 'react-redux'
 import { useEffect } from 'react';
-import { getPokemon } from '../redux/actions'
+import { getPokemon, clearPokemonDetail } from '../redux/actions'
 import { useParams, useNavigate } from 'react-router-dom'
 
 
 export default function Details() {
   let {id} = useParams()
   const detail = useSelector(state => state.pokemonDetail)
+  const loading = useSelector(state => state.pokemonLoading)
   //console.log(detail);
   
   //Volver
@@ -26,6 +27,10 @@ export default function Details() {
   const dispatch = useDispatch()
   useEffect(()=>{
     dispatch(getPokemon(id))
+    // Limpiar el estado cuando el componente se desmonte
+    return () => {
+      dispatch(clearPokemonDetail());
+    }
   },[dispatch,id])
   
   const getPokemonRadarData = () => {
@@ -34,14 +39,14 @@ export default function Details() {
       labels: ['Vida', 'Ataque', 'A. especial', 'Velocidad' , 'D. especial','Defensa', ],
       datasets: [
         {
-          label: detail[0]?.name,
+          label: (loading)? 'Undefined' : detail[0]?.name,
           data: [
-            detail[0]?.vida,
-            detail[0]?.ataque,
-            detail[0]?.ataqueEspecial,
-            detail[0]?.velocidad,
-            detail[0]?.defenzaEspecial,
-            detail[0]?.defensa,
+            (loading)? 0 : detail[0]?.vida,
+            (loading)? 0 : detail[0]?.ataque,
+            (loading)? 0 : detail[0]?.ataqueEspecial,
+            (loading)? 0 : detail[0]?.velocidad,
+            (loading)? 0 : detail[0]?.defenzaEspecial,
+            (loading)? 0 : detail[0]?.defensa,
           ],
           backgroundColor: 'rgba(75, 192, 192, 0.2)',
           borderColor: 'rgba(75, 192, 192, 1)',
@@ -83,27 +88,48 @@ export default function Details() {
         <Radar className={style.radar} data={getPokemonRadarData} options={getPokemonRadarOptions()} />
         <div className={style.otrasStats}>
           <div className={style.contenido}>
-            <h5 className={style.titulo}>Nombre: </h5>
-            <h5 className={style.texto}>{detail[0]?.name}</h5>
+          <h5 className={style.titulo}>Nombre: </h5>
+            {loading 
+              ? <h5 className={style.loading}>Cargando...</h5> 
+              : <h5 className={style.texto}>{detail[0]?.name}</h5>
+            }
           </div>
           <div className={style.contenido}>
             <h5 className={style.titulo}>Altura: </h5>
-            <h5 className={style.texto}>{detail[0]?.altura} pts</h5>
+            {loading 
+              ? <h5 className={style.loading}>Cargando...</h5> 
+              : <h5 className={style.texto}>{detail[0]?.altura} pts</h5>
+            }
           </div>
           <div className={style.contenido}>
             <h5 className={style.titulo}>peso: </h5>
-            <h5 className={style.texto}>{detail[0]?.peso}</h5>
+            {loading 
+              ? <h5 className={style.loading}>Cargando...</h5> 
+              : <h5 className={style.texto}>{detail[0]?.peso}</h5>
+            }
           </div>
           <div className={style.contenido}>
             <h5 className={style.titulo}>tipo: </h5>
-            <h5 className={style.texto}>{detail[0]?.types?.[0]}, {detail[0]?.types?.[1]}</h5>
+            {loading 
+              ? <h5 className={style.loading}>Cargando...</h5> 
+              : <h5 className={style.texto}>{detail[0]?.types?.[0]}, {detail[0]?.types?.[1]}</h5>
+            }
+            
           </div>
         </div>
       </div>
       <div className={style.presentacion}>
-        <div className={style.id}>#{String(detail[0]?.id).padStart(5, '0').slice(0, 5)}</div>
+        {loading 
+            ? <div className={style.id}>#Undef</div> 
+            : <div className={style.id}>#{String(detail[0]?.id).padStart(5, '0').slice(0, 5)}</div>
+        }
+        
         <div className={style.imagen}>
-          <img src={detail[0]?.imagen ? detail[0]?.imagen : detail[0]?.imagenOriginal} alt={detail.name} className={style.imagen}/>
+          {loading 
+              ? <div></div>
+              : <img src={detail[0]?.imagen ? detail[0]?.imagen : detail[0]?.imagenOriginal} alt={detail.name} className={style.imagen}/>
+          }
+          
         </div>
       </div>
       <div className={style.actions}>
