@@ -19,9 +19,11 @@ export default function Consola(props) {
 
 
   function handleMouseMove(event) {
-    let resultadoX = (event.clientX - (window.innerWidth / 2))/ window.innerWidth
-    let resultadoY = (event.clientY - (window.innerHeight/ 2))/ window.innerHeight
-    setPosition({ x: resultadoX, y: resultadoY });
+    if (event) {
+      let resultadoX = (event.clientX - (window.innerWidth / 2))/ window.innerWidth
+      let resultadoY = (event.clientY - (window.innerHeight/ 2))/ window.innerHeight
+      setPosition({ x: resultadoX, y: resultadoY });
+    }
   }
   return (
     <div className={style.fondo} onMouseMove={handleMouseMove}  style={{backgroundColor: fondoDinamico}} >
