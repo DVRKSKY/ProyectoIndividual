@@ -50,8 +50,7 @@ const createPokemon = async (name, imagen, imagenGame, poderes, vida, ataque, de
   }
   await newPokemon.setTypes(types);
 
-  // Devolvemos el Pokémon que ya tienes y los tipos que acabas de asociar a él.
-
+  // Devolvemos el Pokémon que ya tienes y los tipos que acabas de asociar a él. en un solo objeto
   return { 
     ...newPokemon.get({ plain: true }), 
     types: types.map(type => type.get({ plain: true })) 
@@ -74,6 +73,7 @@ const getPokemonById = async (id, source) => {
           throw new Error(`No Pokemon found with id: ${id}`);
       }
       const pokemon = [data.toJSON()]
+      //Pedimos que al type le de formato simple, solo nombre ['xd', 'xd2'] en lugar de color y id, y lo demas
       pokemon[0].types = pokemon[0].types.map(type => type.name)
       return pokemon
   }

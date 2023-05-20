@@ -1,12 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import style from '../modules/home.module.sass';
 import Cards from '../components/Cards';
 import NavBar from '../components/NavBar';
-
-
+import { useDispatch } from 'react-redux';
+import {getPokemons} from '../redux/actions'
 
 export default function Home() {
-  
+  const dispatch = useDispatch()
+  useEffect(()=>{
+    dispatch(getPokemons())
+  }, [])
   
   return (
     <div className={style.fondo}>

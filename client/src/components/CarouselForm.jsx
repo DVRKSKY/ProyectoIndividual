@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from '../modules/carruselForm.module.sass';
-import {useNavigate} from 'react-router-dom'
+import {useNavigate } from 'react-router-dom'
+
 //import styles from '../modules/form.module.sass'
 const CarouselForm = ({ form, errors, changeHandler, validate, isValid, onSubmit }) => {
   const navigate = useNavigate()
@@ -57,6 +58,7 @@ const CarouselForm = ({ form, errors, changeHandler, validate, isValid, onSubmit
     const enviarData = (e) => {
       onSubmit(e)
       nextStep(e)
+      
     }
     
     return (
